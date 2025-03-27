@@ -53,7 +53,7 @@ JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSO
 
 #### Firefox
 
-1. Download the ``json-tool-<version>-firefox.zip` file from the [latest release](https://github.com/laboratorys/JSON-Tool/releases).
+1. Download the `json-tool-<version>-firefox.zip` file from the [latest release](https://github.com/laboratorys/JSON-Tool/releases).
 2. Open Firefox and navigate to `about:addons`.
 3. Click on the gear icon and select "Install Add-on From File...".
 4. Select the `.zip` file.
