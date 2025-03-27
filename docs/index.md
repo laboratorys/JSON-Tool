@@ -34,5 +34,5 @@ features:
   - icon:
       src: /image/color.png
     title: Theme customization
-    details: Dark Mode && Custom color schemes <i class="fa-brands fa-firefox"></i>
+    details: Dark Mode && Custom color schemes
 ---
