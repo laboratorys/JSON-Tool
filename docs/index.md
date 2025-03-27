@@ -5,6 +5,9 @@ layout: home
 hero:
   text: "A browser JSON tool extension."
   actions:
+    - theme: alt
+      text: "Online"
+      link: https://json.noki.icu
     - theme: brand
       text: Chrome
       link: https://chromewebstore.google.com/detail/json-tool/cfjljbmnabbphlgpgmbpmjccjanmheho

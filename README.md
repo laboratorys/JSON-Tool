@@ -13,6 +13,11 @@ JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSO
 > [!TIP]
 > Originally created as a V3-compatible alternative to [JSON-Handle][link-jh] (which lacked V3 support), this project now coexists with [JSON-Handle][link-jh]'s updated version. Its core functionality is derived from JSON-Handle. Special thanks to [JSON-Handle][link-jh] for inspiring this work.
 
+## Links
+
+- [Docs](https://json-docs.noki.icu)
+- [Online Tool](https://json.noki.icu)
+
 ## Features
 
 - **Input Methods:** URL, Context Menu, Manual Input, File Upload.
