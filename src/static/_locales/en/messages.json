@@ -1,0 +1,131 @@
+{
+  "options_card_title": {
+    "message": "Setting"
+  },
+  "options_render_switch_label": {
+    "message": "Auto rendering"
+  },
+  "options_context_menus_text": {
+    "message": "Contexts Menu(Need restart Extension)"
+  },
+  "options_lang_label": {
+    "message": "Language"
+  },
+  "options_theme_label": {
+    "message": "Theme"
+  },
+  "options_open_jt_mode_label": {
+    "message": "Open JT mode"
+  },
+  "options_parsing_engine_label": {
+    "message": "Parsing engine"
+  },
+  "options_show_length_mode_label": {
+    "message": "Show length mode"
+  },
+  "options_show_length_mode_op_arr": {
+    "message": "Array only"
+  },
+  "options_show_length_mode_op_arrObj": {
+    "message": "Array & Object"
+  },
+  "options_sort_keys_text": {
+    "message": "Sort keys"
+  },
+  "options_save_collapse_status_text": {
+    "message": "Save latest collapse status of key"
+  },
+  "options_tree_expand_text": {
+    "message": "Default expand all"
+  },
+  "options_color_style_label": {
+    "message": "Color style"
+  },
+  "options_color_style_op_jt": {
+    "message": "JSON-Tool"
+  },
+  "options_color_style_op_jh": {
+    "message": "JSON-Handle"
+  },
+  "options_color_style_op_custom": {
+    "message": "Custom"
+  },
+  "options_color_label": {
+    "message": "Color scheme"
+  },
+  "options_save_btn_text": {
+    "message": "Save"
+  },
+  "options_reset_btn_text": {
+    "message": "Reset"
+  },
+  "options_save_success_msg": {
+    "message": "Settings saved successfully!"
+  },
+  "copy_success_msg": {
+    "message": "Copied to clipboard!"
+  },
+  "json_err_line": {
+    "message": "Line"
+  },
+  "json_err_context": {
+    "message": "Context"
+  },
+  "json_err_msg": {
+    "message": "Message"
+  },
+  "json_label_path": {
+    "message": "Path"
+  },
+  "json_label_key": {
+    "message": "Key"
+  },
+  "json_btn_modify": {
+    "message": "Modify"
+  },
+  "json_btn_undo": {
+    "message": "Undo"
+  },
+  "json_btn_link": {
+    "message": "Link"
+  },
+  "json_btn_expand_all": {
+    "message": "Expand all"
+  },
+  "json_btn_collapse_all": {
+    "message": "Collapse all"
+  },
+  "json_btn_expand_node": {
+    "message": "Expand node"
+  },
+  "json_btn_scroll_to_node": {
+    "message": "Scroll to node"
+  },
+  "json_check_box_show_value": {
+    "message": "Show value"
+  },
+  "json_check_box_show_length": {
+    "message": "Show length"
+  },
+  "json_check_box_show_ico": {
+    "message": "Show ico"
+  },
+  "json_check_box_folder_style": {
+    "message": "Folder_style"
+  },
+  "json_input_tips": {
+    "message": "Input JSON String OR "
+  },
+  "json_json_file_tips": {
+    "message": "Open File"
+  },
+  "json_input_btn_return": {
+    "message": "Return"
+  },
+  "json_err_alert_title": {
+    "message": "JSON format error"
+  },
+  "json_remember_data_proper": {
+    "message": "Remember data"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "JSON-Tool",
+  "description": "A JSON formatting tool.",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:edge": "wxt -b edge",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build --mv3 -b firefox",
+    "build:edge": "wxt build -b edge",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip --mv3 -b firefox",
+    "zip:edge": "wxt zip -b edge",
+    "compile": "vue-tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "dev:docs": "vitepress dev docs --port 28181",
+    "build:docs": "vitepress build docs",
+    "preview:docs": "vitepress preview docs",
+    "dev:web": "vite dev -c vite.config.web.js",
+    "build:web": "vite build -c vite.config.web.js"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vitejs/plugin-vue-jsx": "^4.1.2",
+    "js-yaml": "^4.1.0",
+    "json5": "^2.2.3",
+    "localforage": "^1.10.0",
+    "lodash-es": "^4.17.21",
+    "vue": "^3.5.12",
+    "vue-clipboard3": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.280",
+    "@types/js-yaml": "^4.0.9",
+    "@types/lodash-es": "^4.17.12",
+    "@wxt-dev/module-vue": "^1.0.1",
+    "naive-ui": "^2.41.0",
+    "typescript": "5.6.3",
+    "vite": "^6.2.3",
+    "vite-plugin-static-copy": "^2.3.0",
+    "vitepress": "^1.6.3",
+    "vue-tsc": "^2.1.10",
+    "wxt": "^0.19.29"
+  },
+  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
+}

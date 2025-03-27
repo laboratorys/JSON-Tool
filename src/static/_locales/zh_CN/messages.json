@@ -1,0 +1,131 @@
+{
+  "options_card_title": {
+    "message": "设置"
+  },
+  "options_render_switch_label": {
+    "message": "自动渲染"
+  },
+  "options_context_menus_text": {
+    "message": "右键菜单(需重启扩展)"
+  },
+  "options_lang_label": {
+    "message": "语言"
+  },
+  "options_theme_label": {
+    "message": "主题"
+  },
+  "options_open_jt_mode_label": {
+    "message": "JT打开模式"
+  },
+  "options_parsing_engine_label": {
+    "message": "解析引擎"
+  },
+  "options_show_length_mode_label": {
+    "message": "成员数量显示"
+  },
+  "options_show_length_mode_op_arr": {
+    "message": "仅数组"
+  },
+  "options_show_length_mode_op_arrObj": {
+    "message": "数组和对象"
+  },
+  "options_sort_keys_text": {
+    "message": "Key按字母排序"
+  },
+  "options_save_collapse_status_text": {
+    "message": "记住上次收起状态"
+  },
+  "options_tree_expand_text": {
+    "message": "默认展开全部"
+  },
+  "options_color_style_label": {
+    "message": "配色风格"
+  },
+  "options_color_style_op_jt": {
+    "message": "JSON-Tool"
+  },
+  "options_color_style_op_jh": {
+    "message": "JSON-Handle"
+  },
+  "options_color_style_op_custom": {
+    "message": "自定义"
+  },
+  "options_color_label": {
+    "message": "配色方案"
+  },
+  "options_save_btn_text": {
+    "message": "保存"
+  },
+  "options_reset_btn_text": {
+    "message": "重置"
+  },
+  "options_save_success_msg": {
+    "message": "设置保存成功!"
+  },
+  "copy_success_msg": {
+    "message": "内容已复制到剪切板！"
+  },
+  "json_err_line": {
+    "message": "行号"
+  },
+  "json_err_context": {
+    "message": "上下文"
+  },
+  "json_err_msg": {
+    "message": "错误信息"
+  },
+  "json_label_path": {
+    "message": "路径"
+  },
+  "json_label_key": {
+    "message": "键"
+  },
+  "json_btn_modify": {
+    "message": "修改"
+  },
+  "json_btn_undo": {
+    "message": "撤销"
+  },
+  "json_btn_link": {
+    "message": "链接"
+  },
+  "json_btn_expand_all": {
+    "message": "全部展开"
+  },
+  "json_btn_collapse_all": {
+    "message": "全部收起"
+  },
+  "json_btn_expand_node": {
+    "message": "展开到选中节点"
+  },
+  "json_btn_scroll_to_node": {
+    "message": "滚动到选中节点"
+  },
+  "json_check_box_show_value": {
+    "message": "显示值"
+  },
+  "json_check_box_show_length": {
+    "message": "显示长度"
+  },
+  "json_check_box_show_ico": {
+    "message": "显示类型"
+  },
+  "json_check_box_folder_style": {
+    "message": "文件夹风格"
+  },
+  "json_input_tips": {
+    "message": "输入JSON字符串或"
+  },
+  "json_json_file_tips": {
+    "message": "打开文件"
+  },
+  "json_input_btn_return": {
+    "message": "返回"
+  },
+  "json_err_alert_title": {
+    "message": "JSON格式错误"
+  },
+  "json_remember_data_proper": {
+    "message": "记住数据"
+  }
+}
