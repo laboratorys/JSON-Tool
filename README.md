@@ -1,4 +1,4 @@
-<img src='./docs/image/logo.svg' width='100'>
+<img src='./docs/public/logo.svg' width='100'>
 
 # JSON Tool
 
