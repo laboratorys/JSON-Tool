@@ -1,2 +1,16 @@
-.n-tree-node-content__text {
+:root {
+  --panel-width: 100%;
+  --panel-right: 0em;
+  --enter-input-card-width: 100%;
+  --remenber-data-left: 80px;
+  --input-panel-height: 85vh;
+}
+@media screen and (min-width: 430px) {
+  :root {
+    --panel-width: 540px;
+    --panel-right: 2em;
+    --enter-input-card-width: 672px;
+    --remenber-data-left: 335px;
+    --input-panel-height: 90vh;
+  }
 }

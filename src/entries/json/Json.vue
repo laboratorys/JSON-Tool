@@ -36,7 +36,7 @@
             <n-switch
               v-model:value="inputModel.rememberData"
               size="medium"
-              style="margin-left: 355px">
+              class="remenber-data">
               <template #checked-icon>
                 <n-icon>
                   <svg
@@ -1508,11 +1508,11 @@ const formatDateTime = () => {
 }
 .input-panel {
   padding: 2px 2px 2px 2px;
-  width: 540px;
-  max-height: 90vh;
+  width: var(--panel-width);
+  max-height: var(--input-panel-height);
   position: fixed;
   z-index: 10;
-  right: 2em;
+  right: var(--panel-right);
   top: 1em;
   box-shadow: 4px 4px 9px rgba(0, 0, 50, 0.2),
     -3px -3px 30px rgba(88, 88, 188, 0.1) inset;
@@ -1562,7 +1562,7 @@ const formatDateTime = () => {
   flex: 1;
 }
 .enter-input-card {
-  width: 672px;
+  width: var(--enter-input-card-width);
   border-radius: 6px;
   box-shadow: 6px 5px 7px rgba(50, 50, 50, 0.4);
 }
@@ -1612,5 +1612,8 @@ const formatDateTime = () => {
 
 .textarea-container:hover .hover-button-group {
   opacity: 1; /* 鼠标悬停时显示 */
+}
+.remenber-data {
+  margin-left: var(--remenber-data-left);
 }
 </style>
