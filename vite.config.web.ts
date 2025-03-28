@@ -6,9 +6,9 @@ export default defineConfig({
   root: "src/entries/json",
   plugins: [vue()],
   build: {
-    outDir: "../../../dist/web", // 输出目录
-    assetsDir: "assets", // 静态资源目录
-    sourcemap: false, // 生产环境关闭 sourcemap
+    outDir: "../../../dist/web",
+    assetsDir: "assets",
+    sourcemap: false,
     rollupOptions: {
       input: path.resolve(__dirname, "src/entries/json/index.html"),
       output: {
@@ -23,9 +23,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"), // 路径别名
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   publicDir: path.resolve(__dirname, "src/static"),
-  base: "./", // 基础路径，根据部署调整
+  base: "./",
 });

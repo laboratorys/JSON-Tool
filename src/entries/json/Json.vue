@@ -569,7 +569,7 @@ const inputModel = ref<InputModel>({
 }); //输入表单数据
 const urlValueRef = ref<string | null>(null); //url value
 const showInputPanel = ref<boolean>(false); //控制输入面板展示隐藏
-const dataSource = ref<string | null>("input"); //数据来源
+const dataSource = ref<string | null>(""); //数据来源
 const showCollapsePannel = ref<boolean>(false); //控制输入面板折叠/展开
 const fileInput = ref<HTMLInputElement | null>(null);
 const testData = ref<any[]>([
@@ -702,29 +702,43 @@ onMounted(() => {
         browser.runtime.sendMessage({ action: "ready", tabId: tab.id });
       }
     });
+  } else {
+    dataSource.value = "input";
+    setInputData();
   }
 });
+//设置输入历史数据
+const setInputData = () => {
+  getItem("preference").then((v: any) => {
+    inputModel.value.rememberData = v?.rememberData || false;
+    if (inputModel.value.rememberData) {
+      getItem("inputData").then((v: any) => {
+        if (v !== null) {
+          inputStartValue.value = JT.stringify(JT.parse(v), null, "    ");
+        }
+      });
+    } else {
+      inputStartValue.value = JT.stringify(testData.value, null, "    ");
+    }
+  });
+};
 if (isExtension.value) {
   //监听background.ts发来的数据消息
   browser.runtime.onMessage.addListener((message) => {
     if (message.action === "sendData" && message.from === "input") {
       dataSource.value = "input";
-      if (inputModel.value.rememberData) {
-        getItem("inputData").then((v: any) => {
-          if (v !== null) {
-            inputStartValue.value = JT.stringify(JT.parse(v), null, "    ");
-          }
-        });
-      } else {
-        inputStartValue.value = JT.stringify(testData.value, null, "    ");
-      }
+      setInputData();
     }
     if (message.action === "sendData" && message.data !== null) {
       dataSource.value = "input";
       inputStartValue.value = message.data;
     }
   });
+} else {
+  dataSource.value = "input";
+  setInputData();
 }
+
 onUnmounted(() => {
   window.removeEventListener("resize", debouncedUpdateHeight);
   window.removeEventListener("keydown", handleKeydown);
