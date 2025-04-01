@@ -2,15 +2,20 @@ import { defineConfig } from "wxt";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  extensionApi: "chrome",
   modules: ["@wxt-dev/module-vue"],
   srcDir: "src",
   outDir: "dist",
   entrypointsDir: "entries",
-  publicDir: "static",
+  publicDir: "src/static",
   manifest: {
     default_locale: "en",
-    permissions: ["storage", "activeTab", "clipboardWrite", "contextMenus"],
+    permissions: [
+      "storage",
+      "activeTab",
+      "clipboardWrite",
+      "contextMenus",
+      "downloads",
+    ],
     action: {},
     web_accessible_resources: [
       {
