@@ -8,6 +8,21 @@
   "options_context_menus_text": {
     "message": "右键菜单(需重启扩展)"
   },
+  "options_edit_pannel_label": {
+    "message": "编辑面板"
+  },
+  "options_edit_pannel_op_click": {
+    "message": "左键点击节点"
+  },
+  "options_edit_pannel_op_start": {
+    "message": "启动时显示"
+  },
+  "options_edit_pannel_op_last": {
+    "message": "上一次展示状态"
+  },
+  "options_edit_pannel_op_button": {
+    "message": "仅按钮"
+  },
   "options_lang_label": {
     "message": "语言"
   },
@@ -62,8 +77,17 @@
   "options_save_success_msg": {
     "message": "设置保存成功!"
   },
+  "options_hot_keys_label": {
+    "message": "热键"
+  },
+  "options_hot_keys_op_search": {
+    "message": "CTRL+K(全局搜索)"
+  },
+  "options_hot_keys_op_save": {
+    "message": "CTRL+S(另存为文件)"
+  },
   "copy_success_msg": {
-    "message": "内容已复制到剪切板！"
+    "message": "已复制！"
   },
   "json_err_line": {
     "message": "行号"
@@ -80,11 +104,17 @@
   "json_label_key": {
     "message": "键"
   },
+  "json_btn_save_as": {
+    "message": "另存为..."
+  },
   "json_btn_modify": {
     "message": "修改"
   },
   "json_btn_undo": {
     "message": "撤销"
+  },
+  "json_btn_compact": {
+    "message": "压缩"
   },
   "json_btn_link": {
     "message": "链接"
@@ -117,7 +147,7 @@
     "message": "输入JSON字符串或"
   },
   "json_json_file_tips": {
-    "message": "打开文件"
+    "message": "打开/拖动文件"
   },
   "json_input_btn_return": {
     "message": "返回"
@@ -127,5 +157,8 @@
   },
   "json_remember_data_proper": {
     "message": "记住数据"
+  },
+  "json_link_tooltip": {
+    "message": "按住 Ctrl 打开链接"
   }
 }

@@ -8,6 +8,21 @@
   "options_context_menus_text": {
     "message": "Contexts Menu(Need restart Extension)"
   },
+  "options_edit_pannel_label": {
+    "message": "Edit pannel"
+  },
+  "options_edit_pannel_op_click": {
+    "message": "Left click node"
+  },
+  "options_edit_pannel_op_start": {
+    "message": "Show when Startup"
+  },
+  "options_edit_pannel_op_last": {
+    "message": "Last Show status"
+  },
+  "options_edit_pannel_op_button": {
+    "message": "Only button"
+  },
   "options_lang_label": {
     "message": "Language"
   },
@@ -62,8 +77,17 @@
   "options_save_success_msg": {
     "message": "Settings saved successfully!"
   },
+  "options_hot_keys_op_search": {
+    "message": "CTRL+K(Global search)"
+  },
+  "options_hot_keys_op_save": {
+    "message": "CTRL+S(Save as file)"
+  },
+  "options_hot_keys_label": {
+    "message": "Hot keys"
+  },
   "copy_success_msg": {
-    "message": "Copied to clipboard!"
+    "message": "Copied!"
   },
   "json_err_line": {
     "message": "Line"
@@ -80,11 +104,17 @@
   "json_label_key": {
     "message": "Key"
   },
+  "json_btn_save_as": {
+    "message": "Save as..."
+  },
   "json_btn_modify": {
     "message": "Modify"
   },
   "json_btn_undo": {
     "message": "Undo"
+  },
+  "json_btn_compact": {
+    "message": "Compact"
   },
   "json_btn_link": {
     "message": "Link"
@@ -117,7 +147,7 @@
     "message": "Input JSON String OR "
   },
   "json_json_file_tips": {
-    "message": "Open File"
+    "message": "Open/Drag File"
   },
   "json_input_btn_return": {
     "message": "Return"
@@ -127,5 +157,8 @@
   },
   "json_remember_data_proper": {
     "message": "Remember data"
+  },
+  "json_link_tooltip": {
+    "message": "Click (hold Ctrl to open)"
   }
 }

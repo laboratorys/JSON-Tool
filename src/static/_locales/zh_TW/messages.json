@@ -1,42 +1,57 @@
 {
   "options_card_title": {
-    "message": "設置"
+    "message": "設定"
   },
   "options_render_switch_label": {
     "message": "自動渲染"
   },
   "options_context_menus_text": {
-    "message": "右鍵菜單(需重啟擴展)"
+    "message": "右鍵選單 (需重新啟動擴充功能)"
+  },
+  "options_edit_pannel_label": {
+    "message": "編輯面板"
+  },
+  "options_edit_pannel_op_click": {
+    "message": "左鍵點擊節點"
+  },
+  "options_edit_pannel_op_start": {
+    "message": "啟動時顯示"
+  },
+  "options_edit_pannel_op_last": {
+    "message": "上次顯示狀態"
+  },
+  "options_edit_pannel_op_button": {
+    "message": "僅按鈕"
   },
   "options_lang_label": {
     "message": "語言"
   },
   "options_theme_label": {
-    "message": "主題"
+    "message": "佈景主題"
   },
   "options_open_jt_mode_label": {
-    "message": "JT打開模式"
+    "message": "JT 開啟模式"
   },
   "options_parsing_engine_label": {
     "message": "解析引擎"
   },
   "options_show_length_mode_label": {
-    "message": "成員數量顯示"
+    "message": "成員數量顯示模式"
   },
   "options_show_length_mode_op_arr": {
-    "message": "僅數組"
+    "message": "僅陣列"
   },
   "options_show_length_mode_op_arrObj": {
-    "message": "數組和對象"
+    "message": "陣列與物件"
   },
   "options_sort_keys_text": {
-    "message": "Key按字母排序"
+    "message": "鍵值依字母排序"
   },
   "options_save_collapse_status_text": {
-    "message": "記住上次收起狀態"
+    "message": "記住上次摺疊狀態"
   },
   "options_tree_expand_text": {
-    "message": "默認展開全部"
+    "message": "預設展開全部"
   },
   "options_color_style_label": {
     "message": "配色風格"
@@ -48,22 +63,31 @@
     "message": "JSON-Handle"
   },
   "options_color_style_op_custom": {
-    "message": "自定义"
+    "message": "自訂"
   },
   "options_color_label": {
     "message": "配色方案"
   },
   "options_save_btn_text": {
-    "message": "保存"
+    "message": "儲存"
   },
   "options_reset_btn_text": {
-    "message": "重置"
+    "message": "重設"
   },
   "options_save_success_msg": {
-    "message": "設置保存成功！"
+    "message": "設定已儲存！"
+  },
+  "options_hot_keys_label": {
+    "message": "快捷鍵"
+  },
+  "options_hot_keys_op_search": {
+    "message": "Ctrl+K (全域搜尋)"
+  },
+  "options_hot_keys_op_save": {
+    "message": "Ctrl+S (另存新檔)"
   },
   "copy_success_msg": {
-    "message": "內容已複製到剪切板！"
+    "message": "已複製！"
   },
   "json_err_line": {
     "message": "行號"
@@ -72,60 +96,69 @@
     "message": "上下文"
   },
   "json_err_msg": {
-    "message": "錯誤信息"
+    "message": "錯誤訊息"
   },
   "json_label_path": {
     "message": "路徑"
   },
   "json_label_key": {
-    "message": "鍵"
+    "message": "鍵值"
+  },
+  "json_btn_save_as": {
+    "message": "另存新檔..."
   },
   "json_btn_modify": {
     "message": "修改"
   },
   "json_btn_undo": {
-    "message": "撤銷"
+    "message": "復原"
+  },
+  "json_btn_compact": {
+    "message": "壓縮"
   },
   "json_btn_link": {
-    "message": "鏈接"
+    "message": "連結"
   },
   "json_btn_expand_all": {
-    "message": "全部展開"
+    "message": "展開全部"
   },
   "json_btn_collapse_all": {
-    "message": "全部收起"
+    "message": "摺疊全部"
   },
   "json_btn_expand_node": {
-    "message": "展開到選中節點"
+    "message": "展開至選取節點"
   },
   "json_btn_scroll_to_node": {
-    "message": "滾動到選中節點"
+    "message": "捲動至選取節點"
   },
   "json_check_box_show_value": {
-    "message": "顯示值"
+    "message": "顯示數值"
   },
   "json_check_box_show_length": {
     "message": "顯示長度"
   },
   "json_check_box_show_ico": {
-    "message": "顯示類型"
+    "message": "顯示圖示類型"
   },
   "json_check_box_folder_style": {
-    "message": "文件夾風格"
+    "message": "資料夾樣式"
   },
   "json_input_tips": {
-    "message": "輸入JSON字串..."
+    "message": "輸入 JSON 字串..."
   },
   "json_json_file_tips": {
-    "message": "打開文件"
+    "message": "開啟或拖曳檔案"
   },
   "json_input_btn_return": {
     "message": "返回"
   },
   "json_err_alert_title": {
-    "message": "JSON格式錯誤"
+    "message": "JSON 格式錯誤"
   },
   "json_remember_data_proper": {
-    "message": "記住數據"
+    "message": "記住資料"
+  },
+  "json_link_tooltip": {
+    "message": "按住 Ctrl 鍵開啟連結"
   }
 }
