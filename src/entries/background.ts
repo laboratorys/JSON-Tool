@@ -119,6 +119,8 @@ export default defineBackground(() => {
         });
       }
     });
+    var options_url = browser.runtime.getURL("/options.html");
+    browser.tabs.create({ url: options_url, active: true });
   });
 
   browser.contextMenus.onClicked.addListener((item) => {

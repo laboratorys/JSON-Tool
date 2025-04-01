@@ -1,4 +1,4 @@
-import { TreeOption as NaiveTreeOption } from "naive-ui";
+import { TreeOption as NaiveTreeOption, SelectOption } from "naive-ui";
 interface CustomTreeOption extends NaiveTreeOption {
   key: string;
   k: string | null; // 键名
@@ -7,6 +7,9 @@ interface CustomTreeOption extends NaiveTreeOption {
   path: string; // 路径
   isLeaf: boolean; // 是否为叶子节点
   children?: CustomTreeOption[]; // 子节点（可选）
+}
+interface JsonPathOption extends SelectOption {
+  treeOption: CustomTreeOption;
 }
 interface JsonParseResult {
   isValid: boolean;
@@ -20,13 +23,17 @@ interface JsonParseResult {
 interface InputModel {
   path: string | null;
   value: string | null;
+  valueType: string;
   key: string | null;
   oldValue: string | null;
   showValue: boolean;
   showLength: boolean;
   showIcon: boolean;
   folderStyle: boolean;
-  nodeKey?: string;
-  rememberData?: boolean;
+  nodeKey: string;
+  rememberData?: boolean | false;
+  showInputPanel?: boolean | false;
+  clickStyle?: any | {};
+  showCollapsePannel?: boolean | false;
 }
-export { CustomTreeOption, JsonParseResult, InputModel };
+export { CustomTreeOption, JsonPathOption, JsonParseResult, InputModel };

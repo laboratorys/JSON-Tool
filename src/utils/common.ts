@@ -52,6 +52,17 @@ const isBase64 = (str: string | null = null) => {
     return false;
   }
 };
+const isEncoded = (str: string | null = null) => {
+  try {
+    if (str === null) {
+      return false;
+    }
+    const decoded = decodeURIComponent(str);
+    return decoded !== str;
+  } catch (e) {
+    return false;
+  }
+};
 const getLastArrayIndexFromPath = (path: string) => {
   const parts = path.split(/[\[\].]/).filter(Boolean);
   const lastPart = parts[parts.length - 1];
@@ -90,6 +101,7 @@ const defaultOptions = {
   renderSwitch: true,
   renderTypes: ["JSON"],
   contextMenus: true,
+  showPannel: ["leftClick"],
   lang: "en",
   theme: "auto",
   openJTMode: "window",
@@ -98,6 +110,7 @@ const defaultOptions = {
   sortKeys: false,
   treeExpandMode: true,
   showLengthMode: "arr",
+  hotKeys: ["ctrl_k", "ctrl_s"],
   colorStyle: "jt",
   customColor: jtColor,
   color: jtColor,
@@ -111,6 +124,7 @@ export {
   jhColor,
   JT,
   isBase64,
+  isEncoded,
   getLastArrayIndexFromPath,
   isValidUrl,
 };

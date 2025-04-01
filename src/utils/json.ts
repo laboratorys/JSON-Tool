@@ -1,3 +1,4 @@
+import { toRaw } from "vue";
 import { JT } from "@/utils/common";
 interface JsonParseResult {
   isValid: boolean;
@@ -225,7 +226,7 @@ const getValueByPath = (json: any, path: string) => {
   const pathParts = path.startsWith("JSON") ? path.replace("JSON", "") : path; //处理根节点
   const parts = pathParts.split(/[\[\].]/).filter((part) => part !== ""); //路径解析
 
-  let current = json;
+  let current = toRaw(json);
   //循环路径
   for (const part of parts) {
     if (current === null || current === undefined) {
@@ -245,14 +246,9 @@ const getValueByPath = (json: any, path: string) => {
         return undefined;
       }
     }
+    current = toRaw(current);
   }
-  if (
-    Array.isArray(current) ||
-    (typeof current === "object" && current !== null)
-  ) {
-    return JT.stringify(current, null, "    ");
-  }
-  return strExt(current);
+  return current;
 };
 const strExt = (v: any) => {
   if (v === null) {

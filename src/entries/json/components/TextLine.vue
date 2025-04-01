@@ -16,30 +16,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
-export default defineComponent({
-  name: "TextLine",
-  props: {
-    text: {
-      type: String,
-      default: "",
-    },
-    highlightedLine: {
-      type: Number,
-      default: 1,
-    },
-  },
-  setup(props) {
-    const lineCount = computed(() => {
-      return props.text ? props.text.split("\n").length : 1;
-    });
+const props = defineProps<{
+  text?: string;
+  highlightedLine?: number;
+}>();
 
-    return {
-      lineCount,
-    };
-  },
+const lineCount = computed(() => {
+  return props.text ? props.text.split("\n").length : 1;
 });
 </script>
 

@@ -68,6 +68,24 @@
               {{ i18n("options_context_menus_text") }}
             </n-checkbox>
           </n-form-item>
+          <n-form-item :label="i18n('options_edit_pannel_label')">
+            <n-checkbox-group
+              v-model:value="options.showPannel"
+              @update:value="checkShowBtn">
+              <n-checkbox
+                value="leftClick"
+                :label="i18n('options_edit_pannel_op_click')" />
+              <n-checkbox
+                value="startup"
+                :label="i18n('options_edit_pannel_op_start')" />
+              <n-checkbox
+                value="lastStatus"
+                :label="i18n('options_edit_pannel_op_last')" />
+              <n-checkbox
+                value="onlyBtn"
+                :label="i18n('options_edit_pannel_op_button')" />
+            </n-checkbox-group>
+          </n-form-item>
           <n-form-item :label="i18n('options_lang_label')">
             <n-select
               v-model:value="options.lang"
@@ -110,6 +128,16 @@
                 {{ i18n("options_show_length_mode_op_arrObj") }}
               </n-radio>
             </n-radio-group>
+          </n-form-item>
+          <n-form-item :label="i18n('options_hot_keys_label')">
+            <n-checkbox-group v-model:value="options.hotKeys">
+              <n-checkbox
+                value="ctrl_k"
+                :label="i18n('options_hot_keys_op_search')" />
+              <n-checkbox
+                value="ctrl_s"
+                :label="i18n('options_hot_keys_op_save')" />
+            </n-checkbox-group>
           </n-form-item>
           <n-form-item>
             <n-checkbox v-model:checked="options.sortKeys">
@@ -311,11 +339,15 @@ const handleResetOptions = () => {
   const { message } = getDiscreteApi();
   message.success(i18n("options_save_success_msg"));
 };
+const checkShowBtn = (value: (string | number)[]) => {
+  if (value.includes("onlyBtn")) {
+    options.showPannel = ["onlyBtn"];
+  }
+};
 onMounted(() => {
   getItem("options").then((savedOptions: any) => {
     if (savedOptions) {
       Object.assign(options, savedOptions);
-      console.log(options);
     }
   });
 });
