@@ -16,6 +16,7 @@ stats.html
 stats-*.json
 .wxt
 web-ext.config.ts
+.vitepress/cache/*
 
 # Editor directories and files
 .vscode/
