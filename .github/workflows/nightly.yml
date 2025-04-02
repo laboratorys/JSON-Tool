@@ -11,52 +11,41 @@ on:
     branches: ["main"]
 
 jobs:
-  Build:
+  Version:
     runs-on: ubuntu-latest
     outputs:
-      files: ${{ steps.list.outputs.files }}
+      version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0
+      - name: Get version
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+  Build:
+    needs: Version
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [chrome, edge, firefox]
+    steps:
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
           version: "latest"
-
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
-
       - name: Install dependencies
         run: pnpm install
-
       - name: Zip extensions
-        run: |
-          mkdir -p ${{ env.DIRECTORY }}
-          pnpm run zip
-          pnpm run zip:firefox
-          pnpm run zip:edge
-          ls -la ${{ env.DIRECTORY }}  # 调试文件生成
-
-      - name: List files
-        id: list
-        run: |
-          sudo apt-get update && sudo apt-get install -y jq
-          files=$(find ${{ env.DIRECTORY }} -type f -name "*.zip" -printf '"%P"\n' | jq -s -c .)
-          echo "files=$files" >> $GITHUB_OUTPUT
-
-  Upload:
-    needs: Build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        file: ${{ fromJson(needs.Build.outputs.files) }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Upload artifact
+        run: pnpm run zip:${{ matrix.target }}
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.file }}
-          path: ${{ format('{0}/{1}', env.DIRECTORY, matrix.file) }}
+          name: ${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}
+          path: dist/${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}.zip
