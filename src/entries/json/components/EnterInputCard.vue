@@ -103,7 +103,6 @@
           clearable
           :autosize="{ maxRows: 18, minRows: 18 }"
           ref="textareaRef"
-          :disabled="inputDisabled"
           @dragover="handleDragOver"
           @dragenter="handleDragEnter"
           @dragleave="handleDragLeave"
@@ -184,7 +183,6 @@ const emit = defineEmits([
 ]);
 
 const fileInput = ref<HTMLInputElement | null>(null);
-const inputDisabled = ref(false);
 const triggerFileInput = () => {
   fileInput.value?.click();
 };
@@ -196,18 +194,15 @@ const handleConvert = (key: string | number) => emit("handleConvert", key);
 const updateInputStartValue = (value: string) =>
   emit("update:inputStartValue", value);
 
-// 拖放事件处理
 const handleDragEnter = (event: DragEvent) => {
   event.preventDefault();
   if (textareaRef.value) {
     textareaRef.value.$el.classList.add("drag-over");
-    inputDisabled.value = true;
   }
 };
 
 const handleDragOver = (event: DragEvent) => {
   event.preventDefault();
-  // 确保拖动时保持高亮状态
   if (
     textareaRef.value &&
     !textareaRef.value.$el.classList.contains("drag-over")
@@ -220,14 +215,12 @@ const handleDragLeave = (event: DragEvent) => {
   event.preventDefault();
   if (textareaRef.value) {
     textareaRef.value.$el.classList.remove("drag-over");
-    inputDisabled.value = false;
   }
 };
 const handleDrop = (event: DragEvent) => {
   event.preventDefault();
   if (textareaRef.value) {
     textareaRef.value.$el.classList.remove("drag-over");
-    inputDisabled.value = false;
   }
   const files = event.dataTransfer?.files;
   if (!files || files.length === 0) return;
@@ -271,12 +264,13 @@ const handleDrop = (event: DragEvent) => {
   width: 100%;
   transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
-/* 拖入状态样式 */
 .input-textarea.drag-over {
-  background-color: #333333; /* 黑灰色背景 */
-  border: 3px #555555; /* 灰色边框 */
-  opacity: 0.7; /* 降低透明度，模拟禁用效果 */
-  color: #aaaaaa; /* 文字颜色变浅 */
+  background-color: #333333;
+  border: 3px #555555;
+  opacity: 0.7;
+  cursor: not-allowed;
+  color: var(--n-text-color-disabled);
+  text-decoration-color: var(--n-text-color-disabled);
 }
 .hover-button-group {
   position: absolute;
