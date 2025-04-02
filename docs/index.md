@@ -17,6 +17,12 @@ hero:
     - theme: brand
       text: "Firefox"
       link: https://addons.mozilla.org/en-US/firefox/addon/json-tool/
+    - theme: brand
+      text: "GitHub Release"
+      link: https://github.com/laboratorys/JSON-Tool/releases/latest
+    - theme: brand
+      text: "Nightly build"
+      link: https://nightly.link/laboratorys/JSON-Tool/workflows/nightly-build/main
 
 features:
   - icon:
