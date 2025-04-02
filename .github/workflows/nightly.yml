@@ -36,8 +36,9 @@ jobs:
         id: list
         run: |
           sudo apt-get update && sudo apt-get install -y jq
-          files=$(find ${{ env.DIRECTORY }} -type f -name "${{ env.PROJECT_NAME }}-*.zip" | jq -R . | jq -s .)
+          files=$(find ${{ env.DIRECTORY }} -type f -name "${{ env.PROJECT_NAME }}-*.zip" | jq -R . | jq -s -c .)
           echo "files=$files" >> $GITHUB_OUTPUT
+        shell: bash
 
   Upload:
     needs: Build
