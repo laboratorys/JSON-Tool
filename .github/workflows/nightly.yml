@@ -40,7 +40,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
         shell: bash
 
- Upload:
+  Upload:
     needs: Build
     runs-on: ubuntu-latest
     strategy:
