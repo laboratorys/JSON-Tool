@@ -8,34 +8,34 @@
 
 ---
 
-English | [中文](https://github.com/laboratorys/JSON-Tool/blob/main/README_ZH.md)
+[English](https://github.com/laboratorys/JSON-Tool/blob/main/README.md) | 中文
 
-JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSON workflows and enhance developer productivity. Packed with smart features and essential utilities, it’s the perfect companion for developers, testers, and anyone working with structured data.
+JSON-Tool 是一款功能强大的多合一浏览器扩展，旨在简化 JSON 工作流程并提升开发者的生产力。它集成了智能功能和必备工具，是开发者、测试人员以及任何处理结构化数据的人的理想伴侣。
 
 [link-jh]: https://jsonhandle.sinaapp.com/ "JSON-Handle"
 
 > [!TIP]
-> Originally created as a V3-compatible alternative to [JSON-Handle][link-jh] (which lacked V3 support), this project now coexists with [JSON-Handle][link-jh]'s updated version. Its core functionality is derived from JSON-Handle. Special thanks to [JSON-Handle][link-jh] for inspiring this work.
+> 本项目最初是为替代不支持 V3 的 [JSON-Handle][link-jh] 而创建的 V3 版本。其核心功能源自 [JSON-Handle][link-jh]。特别感谢 [JSON-Handle][link-jh] 对本项目的启发。
 
-## Links
+## 链接
 
-- [Docs](https://json-docs.noki.icu)
-- [Online Tool](https://json.noki.icu)
+- [文档](https://json-docs.noki.icu)
+- [在线工具](https://json.noki.icu)
 
-## Features
+## 功能
 
-- **Input Methods:** URL, Context Menu, Manual Input, File Upload.
-- **Display:** Tree Structure (Expand/Collapse), Syntax Highlighting, Theme Switching.
-- **Operations:** Search (Ctrl+K), Copy Key/Value/Path, Data Conversion (Compression, Decoding, Timestamp, Format Conversion).
-- **Performance:** Virtual Scrolling for Large JSON.
-- **Additional Features:** Multi-language Support, Works on Chrome, Edge, and Firefox.
+- **输入方式：** URL、上下文菜单、手动输入、文件上传。
+- **显示：** 树形结构（展开/折叠）、语法高亮、主题切换。
+- **操作：** 搜索（Ctrl+K）、复制键/值/路径、数据转换（压缩、解码、时间戳、格式转换）。
+- **性能：** 大型 JSON 的虚拟滚动。
+- **附加功能：** 多语言支持，兼容 Chrome、Edge 和 Firefox。
 
-## Installation
+## 安装
 
 > [!TIP]
-> Since it takes time for the extension store to review and publish, usually 1-5 days, you can download the latest extension in [Nightly.link](https://nightly.link/laboratorys/JSON-Tool/workflows/nightly/main)
+> 由于扩展商店的审核和发布需要时间，通常为 1-5 天，您可以在 [Nightly.link](https://nightly.link/laboratorys/JSON-Tool/workflows/nightly/main) 下载最新的扩展。
 
-### By store
+### 通过商店安装
 
 [link-chrome]: https://chromewebstore.google.com/detail/json-tool/cfjljbmnabbphlgpgmbpmjccjanmheho "Version published on Chrome Web Store"
 [link-edge]: https://microsoftedge.microsoft.com/addons/detail/jsontool/fgppigoofkdaealhhghmjdnkmcpcndid "Version published on Edge Web Store"
@@ -45,35 +45,35 @@ JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSO
 [<img src="https://raw.githubusercontent.com/alrra/browser-logos/90fdf03c/src/edge/edge.svg" width="48" alt="Edge" style="vertical-align: middle">][link-edge] [<img src="https://img.shields.io/badge/dynamic/json?label=&query=%24.version&url=https://microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/fgppigoofkdaealhhghmjdnkmcpcndid" style="vertical-align: middle">][link-edge]　
 [<img src="https://raw.githubusercontent.com/alrra/browser-logos/90fdf03c/src/firefox/firefox.svg" width="48" alt="Firefox" style="vertical-align: middle">][link-firefox] [<img src="https://img.shields.io/amo/v/json-tool.svg?label=%20" style="vertical-align: middle">][link-firefox]
 
-### By file
+### 通过文件安装
 
 #### Google Chrome/Microsoft Edge
 
-1. Download the `json-tool-<version>-{chrome/edge}.zip` file from the [latest release](https://github.com/laboratorys/JSON-Tool/releases).
-2. Extract the contents of the `.zip` file.
-3. Open Google Chrome and navigate to `{chrome/edge}://extensions/`.
-4. Enable "Developer mode".
-5. Click on "Load unpacked" and select the `dist` folder.
-6. JSON Tool should now appear in your list of Chrome extensions and is ready to use.
+1. 从 [最新发布](https://github.com/laboratorys/JSON-Tool/releases) 下载 `json-tool-<version>-{chrome/edge}.zip` 文件。
+2. 解压 `.zip` 文件内容。
+3. 打开 Google Chrome，导航到 `{chrome/edge}://extensions/`。
+4. 启用“开发者模式”。
+5. 点击“加载未打包的扩展”，选择 `dist` 文件夹。
+6. JSON Tool 现在应该出现在你的 Chrome 扩展列表中，可以开始使用。
 
 #### Firefox
 
-1. Download the `json-tool-<version>-firefox.zip` file from the [latest release](https://github.com/laboratorys/JSON-Tool/releases).
-2. Open Firefox and navigate to `about:addons`.
-3. Click on the gear icon and select "Install Add-on From File...".
-4. Select the `.zip` file.
-5. JSON Tool should now appear in your list of Firefox extensions and is ready to use.
+1. 从 [最新发布](https://github.com/laboratorys/JSON-Tool/releases) 下载 `json-tool-<version>-firefox.zip` 文件。
+2. 打开 Firefox，导航到 `about:addons`。
+3. 点击齿轮图标，选择“从文件安装附加组件...”。
+4. 选择 `.zip` 文件。
+5. JSON Tool 现在应该出现在你的 Firefox 扩展列表中，可以开始使用。
 
-## Usage
+## 使用方法
 
-1. Click the extension icon to open JSON-Tool in a tab or window. You can then manually enter JSON text or upload a JSON file. After clicking the JSON-Tool button, you will receive a formatted JSON data structure.
-2. When a browser opens a URL that returns JSON data, it automatically renders the JSON into a structured tree format.
-3. Open the options to configure the plugin, including theme, internationalization, color scheme, etc.
+1. 点击扩展图标，在标签页或窗口中打开 JSON-Tool。你可以手动输入 JSON 文本或上传 JSON 文件。点击 JSON-Tool 按钮后，你将获得格式化的 JSON 数据结构。
+2. 当浏览器打开返回 JSON 数据的 URL 时，它会自动将 JSON 渲染为结构化的树形格式。
+3. 打开选项配置插件，包括主题、国际化、配色方案等。
 
-## Support
+## 支持
 
-If you encounter any issues or have suggestions for improvements, please feel free to [open an issue in this repository](https://github.com/laboratorys/JSON-Tool/issues/new).
+如果您遇到任何问题或有改进建议，请随时在 [此仓库中提交问题](https://github.com/laboratorys/JSON-Tool/issues/new).
 
-## License
+## 许可证
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+本项目采用 MIT 许可证 - 详情请参阅 LICENSE 文件。
