@@ -22,7 +22,7 @@ hero:
       link: https://github.com/laboratorys/JSON-Tool/releases/latest
     - theme: brand
       text: "Nightly build"
-      link: https://nightly.link/laboratorys/JSON-Tool/workflows/nightly-build/main
+      link: https://nightly.link/laboratorys/JSON-Tool/workflows/nightly/main
 
 features:
   - icon:
