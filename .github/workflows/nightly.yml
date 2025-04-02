@@ -13,6 +13,8 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.list.outputs.files }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
@@ -30,7 +32,25 @@ jobs:
           pnpm run zip && 
           pnpm run zip:firefox && 
           pnpm run zip:edge
-      - uses: actions/upload-artifact@v4
+      - name: List files
+        id: list
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq
+          files=$(find ${{ env.DIRECTORY }} -type f -name "${{ env.PROJECT_NAME }}-*.zip" | jq -R . | jq -s .)
+          echo "files=$files" >> $GITHUB_OUTPUT
+
+  Upload:
+    needs: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        file: ${{ fromJson(needs.Build.outputs.files) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: Upload artifact
-          path: ${{ env.DIRECTORY }}/${{env.PROJECT_NAME}}-*.zip
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ matrix.file }}
+        env:
+          ARTIFACT_NAME: $(basename "${{ matrix.file }}")
