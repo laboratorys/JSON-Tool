@@ -49,3 +49,4 @@ jobs:
         with:
           name: ${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}
           path: dist/${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}.zip
+          compression-level: 0
