@@ -43,10 +43,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Zip extensions
-        run: pnpm run zip:${{ matrix.target }}
+        run: |
+          pnpm run zip:${{ matrix.target }} && 
+          unzip dist/${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}.zip -d dist/unzipped/
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}
-          path: dist/${{ env.PROJECT_NAME }}-${{ needs.Version.outputs.version }}-${{ matrix.target }}.zip
-          compression-level: 0
+          path: dist/unzipped/
