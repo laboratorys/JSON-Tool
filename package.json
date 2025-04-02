@@ -12,6 +12,7 @@
     "build:firefox": "wxt build --mv3 -b firefox",
     "build:edge": "wxt build -b edge",
     "zip": "wxt zip",
+    "zip:chrome": "wxt zip --mv3 -b chrome",
     "zip:firefox": "wxt zip --mv3 -b firefox",
     "zip:edge": "wxt zip -b edge",
     "compile": "vue-tsc --noEmit",
