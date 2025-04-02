@@ -17,28 +17,34 @@ jobs:
       files: ${{ steps.list.outputs.files }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: pnpm/action-setup@v3
         with:
           version: "latest"
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
+
       - name: Install dependencies
         run: pnpm install
+
       - name: Zip extensions
         run: |
-          pnpm run zip && 
-          pnpm run zip:firefox && 
+          mkdir -p ${{ env.DIRECTORY }}
+          pnpm run zip
+          pnpm run zip:firefox
           pnpm run zip:edge
+          ls -la ${{ env.DIRECTORY }}  # 调试文件生成
+
       - name: List files
         id: list
         run: |
           sudo apt-get update && sudo apt-get install -y jq
-          files=$(find ${{ env.DIRECTORY }} -type f -name "${{ env.PROJECT_NAME }}-*.zip" | jq -R . | jq -s -c .)
+          files=$(find ${{ env.DIRECTORY }} -type f -name "*.zip" -printf '"%P"\n' | jq -s -c .)
           echo "files=$files" >> $GITHUB_OUTPUT
-        shell: bash
 
   Upload:
     needs: Build
@@ -48,10 +54,9 @@ jobs:
         file: ${{ fromJson(needs.Build.outputs.files) }}
     steps:
       - uses: actions/checkout@v4
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ matrix.file }}
-        env:
-          ARTIFACT_NAME: $(basename "${{ matrix.file }}")
+          name: ${{ matrix.file }}
+          path: ${{ format('{0}/{1}', env.DIRECTORY, matrix.file) }}
