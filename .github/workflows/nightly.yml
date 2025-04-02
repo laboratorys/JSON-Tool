@@ -40,7 +40,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
         shell: bash
 
-  Upload:
+ Upload:
     needs: Build
     runs-on: ubuntu-latest
     strategy:
@@ -48,6 +48,11 @@ jobs:
         file: ${{ fromJson(needs.Build.outputs.files) }}
     steps:
       - uses: actions/checkout@v4
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: all-zip-files
+          path: ${{ env.DIRECTORY }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
