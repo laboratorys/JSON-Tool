@@ -15,6 +15,7 @@
     "zip:chrome": "wxt zip --mv3 -b chrome",
     "zip:firefox": "wxt zip --mv3 -b firefox",
     "zip:edge": "wxt zip -b edge",
+    "zip:source": "wxt zip --mv3 -b firefox",
     "compile": "vue-tsc --noEmit",
     "postinstall": "wxt prepare",
     "dev:docs": "vitepress dev docs --port 28181",
