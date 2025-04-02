@@ -28,6 +28,9 @@ JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSO
 
 ## Installation
 
+> [!TIP]
+> Since it takes time for the extension store to review and publish, usually 1-5 days, you can download the latest extension in [Nightly.link](https://nightly.link/laboratorys/JSON-Tool/workflows/nightly/main)
+
 ### By store
 
 [link-chrome]: https://chromewebstore.google.com/detail/json-tool/cfjljbmnabbphlgpgmbpmjccjanmheho "Version published on Chrome Web Store"
