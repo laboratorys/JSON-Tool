@@ -9,13 +9,7 @@ export default defineConfig({
   publicDir: "src/static",
   manifest: {
     default_locale: "en",
-    permissions: [
-      "storage",
-      "activeTab",
-      "clipboardWrite",
-      "contextMenus",
-      "downloads",
-    ],
+    permissions: ["activeTab", "clipboardWrite", "contextMenus", "downloads"],
     action: {},
     web_accessible_resources: [
       {
