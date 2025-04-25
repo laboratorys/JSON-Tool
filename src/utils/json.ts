@@ -228,10 +228,11 @@ const getValueByPath = (json: any, path: string) => {
 
   let current = toRaw(json);
   //循环路径
-  for (const part of parts) {
+  for (var part of parts) {
     if (current === null || current === undefined) {
       return undefined;
     }
+    part = decodeURIComponent(part);
     if (typeof part === "string" && /^\d+$/.test(part)) {
       const index = parseInt(part, 10);
       if (Array.isArray(current) && index >= 0 && index < current.length) {

@@ -115,6 +115,13 @@ const defaultOptions = {
   customColor: jtColor,
   color: jtColor,
 };
+const encodeKey = (key: string) => {
+  return encodeURIComponent(key)
+    .replace(/\./g, "%2E") // 强制编码点号
+    .replace(/\//g, "%2F") // 可选：编码斜杠
+    .replace(/\[/g, "%5B") // 可选：编码方括号
+    .replace(/\]/g, "%5D");
+};
 export {
   getItem,
   setItem,
@@ -127,4 +134,5 @@ export {
   isEncoded,
   getLastArrayIndexFromPath,
   isValidUrl,
+  encodeKey,
 };

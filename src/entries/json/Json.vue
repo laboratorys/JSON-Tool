@@ -123,6 +123,7 @@ import {
   isEncoded,
   getLastArrayIndexFromPath,
   isValidUrl,
+  encodeKey,
 } from "@/utils/common";
 import {
   parseJsonWithErrorDetails,
@@ -473,7 +474,7 @@ const buildTree = (
   } else if (dataType === "object") {
     Object.entries(data).forEach(([key, value]) => {
       const valueType = getType(value);
-      const childPath = `${parentPath}.${key}`;
+      const childPath = `${parentPath}.${encodeKey(key)}`;
       const childNode: CustomTreeOption = {
         key: generateKey(`obj-${key}`),
         k: key,
@@ -783,7 +784,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
 const nodeClick = (customOption: CustomTreeOption | null) => {
   if (customOption == null) return;
   //点击节点，赋值给输入区域
-  inputModel.value.path = customOption.path;
+  inputModel.value.path = decodeURIComponent(customOption.path);
   inputModel.value.key = customOption.k;
   inputModel.value.nodeKey = customOption.key;
   const current = getValueByPath(jsonParsedData.value, customOption.path);
