@@ -124,6 +124,7 @@ import {
   getLastArrayIndexFromPath,
   isValidUrl,
   encodeKey,
+  strClean,
 } from "@/utils/common";
 import {
   parseJsonWithErrorDetails,
@@ -921,10 +922,6 @@ const getParentKeys = (targetKey: string) => {
     currentKey = String(parentKey);
   }
   return keys;
-};
-//字符串清理：前后引号
-const strClean = (v: any) => {
-  return String(v.replace(/^['"]|['"]$/g, ""));
 };
 //修改输入值
 const modifyInputValue = () => {

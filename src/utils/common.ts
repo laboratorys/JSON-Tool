@@ -122,6 +122,10 @@ const encodeKey = (key: string) => {
     .replace(/\[/g, "%5B") // 可选：编码方括号
     .replace(/\]/g, "%5D");
 };
+//字符串清理：前后引号
+const strClean = (v: any) => {
+  return String(v.replace(/^['"]|['"]$/g, ""));
+};
 export {
   getItem,
   setItem,
@@ -135,4 +139,5 @@ export {
   getLastArrayIndexFromPath,
   isValidUrl,
   encodeKey,
+  strClean,
 };

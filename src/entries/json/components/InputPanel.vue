@@ -117,7 +117,37 @@
             </n-icon>
           </n-button>
         </n-form-item>
-        <n-form-item :show-label="false">
+        <n-form-item class="textarea-container" :show-label="false">
+          <n-button
+            text
+            class="textarea-copy-btn"
+            style="font-size: 20px"
+            @click="copyTextValue(inputModel.value)">
+            <n-icon>
+              <svg
+                v-if="!valueCopied"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 16 16">
+                <g fill="none">
+                  <path
+                    d="M4 4.085V10.5a2.5 2.5 0 0 0 2.336 2.495L6.5 13h4.414A1.5 1.5 0 0 1 9.5 14H6a3 3 0 0 1-3-3V5.5a1.5 1.5 0 0 1 1-1.415zM11.5 2A1.5 1.5 0 0 1 13 3.5v7a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 5 10.5v-7A1.5 1.5 0 0 1 6.5 2h5zm0 1h-5a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5z"
+                    fill="currentColor"></path>
+                </g>
+              </svg>
+              <svg
+                v-if="valueCopied"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 12 12">
+                <g fill="none">
+                  <path
+                    d="M9.854 3.146a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L5 7.293l4.146-4.147a.5.5 0 0 1 .708 0z"
+                    fill="currentColor"></path>
+                </g>
+              </svg>
+            </n-icon>
+          </n-button>
           <n-popover
             placement="bottom-end"
             :show="showValueCopied"
@@ -129,7 +159,6 @@
                 type="textarea"
                 round
                 :spellcheck="false"
-                @dblclick="copyTextValue(inputModel.value)"
                 clearable
                 class="dynamic-textarea"
                 :autosize="{ minRows: 18, maxRows: 18 }" />
@@ -399,6 +428,7 @@ import { ref } from "vue";
 import { i18n } from "@/utils/i18n";
 import useClipboard from "vue-clipboard3";
 import { type JsonPathOption, type InputModel } from "@/utils/types";
+import { strClean } from "@/utils/common";
 
 const { toClipboard } = useClipboard();
 
@@ -435,6 +465,7 @@ const pathCopied = ref(false);
 const showPathCopied = ref(false);
 const keyCopied = ref(false);
 const showKeyCopied = ref(false);
+const valueCopied = ref(false);
 const showValueCopied = ref(false);
 const collapsePannel = () => emit("collapsePannel");
 const copyPathText = async (val: any) => {
@@ -461,9 +492,11 @@ const copyKeyText = async (val: any) => {
 };
 const copyTextValue = async (val: any) => {
   try {
-    await toClipboard(val);
+    await toClipboard(strClean(val));
+    valueCopied.value = true;
     showValueCopied.value = true;
     setTimeout(() => {
+      valueCopied.value = false;
       showValueCopied.value = false;
     }, 3000);
   } catch (e) {}
@@ -518,6 +551,7 @@ const handlePathUpdateValue = (value: string, option: JsonPathOption) =>
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .button-container {
   flex-shrink: 0;
@@ -537,5 +571,19 @@ const handlePathUpdateValue = (value: string, option: JsonPathOption) =>
   padding-left: 7px;
   z-index: 1;
   font-size: 20px;
+}
+.textarea-copy-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 20px;
+  display: none;
+  z-index: 1;
+}
+.textarea-container {
+  position: relative;
+}
+.textarea-container:hover .textarea-copy-btn {
+  display: block;
 }
 </style>
