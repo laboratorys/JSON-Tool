@@ -536,28 +536,42 @@ const renderNodeContent = (
   extraContent: any[] = []
 ) => {
   let k = inputModel.value.showValue ? `${option.k}: ` : `${option.k}`;
+  const isSelected = selectedKeys.value.includes(option.key);
+  const theme = currentTheme.value.name === "dark" ? "dark" : "light";
   if (option.type === "object" || option.type === "array") {
     k = `${option.k}`;
   } else if (option.k === null) {
     k = "";
   }
   let v = `${String(option.v)}`;
-  let vColor = colorMap.get(option.type).color;
+  let vColor = colorMap.get(option.type)[theme];
   if (option.type === "object" || option.type === "array") {
     v = "";
   }
-
-  const content = [getPrefixByType(option)];
-
+  var textColor = "white";
+  if (theme === "dark") {
+    textColor = "black";
+  }
+  const prefix = getPrefixByType(
+    option,
+    isSelected,
+    isSelected ? textColor : ""
+  );
+  const content: any[] = [];
   if (extraContent.length === 0 && k) {
     let kColor = "";
     if (option.type === "array") {
-      kColor = colorMap.get("array").color;
+      kColor = colorMap.get("array")[theme];
     } else {
       if (option.isLeaf) {
-        kColor = colorMap.get("key").color;
+        kColor = colorMap.get("key")[theme];
       }
     }
+    if (isSelected) {
+      kColor = textColor;
+      vColor = textColor;
+    }
+    content.push(prefix);
     content.push(
       h(
         "span",
@@ -577,6 +591,14 @@ const renderNodeContent = (
 
   if (inputModel.value.showValue && option.isLeaf) {
     if (isValidUrl(String(v))) {
+      var urlColor = "";
+      if (isSelected) {
+        if (theme === "dark") {
+          urlColor = "black";
+        } else {
+          urlColor = "white";
+        }
+      }
       content.push(
         h(
           NPopover,
@@ -595,7 +617,7 @@ const renderNodeContent = (
                   href: v,
                   target: "_blank",
                   style: {
-                    color: "#63E2B7FF",
+                    color: urlColor,
                     marginLeft: "5px",
                     lineHeight: "20px",
                     verticalAlign: "middle",
@@ -630,13 +652,20 @@ const renderNodeContent = (
         )
       );
     } else {
+      if (isSelected) {
+        var textColor = "white";
+        if (theme === "dark") {
+          textColor = "black";
+        }
+        vColor = textColor;
+      }
       content.push(
         h(
           "span",
           {
             style: {
               color: vColor,
-              marginLeft: "5px",
+              marginLeft: "0px",
               lineHeight: "20px",
               verticalAlign: "middle",
               fontSize: "15px",
@@ -706,29 +735,52 @@ const handleMoveDown = () => {
 };
 //初始化前缀缓存，避免每次都加载
 const initializePrefixCache = (options: any[]) => {
+  const theme = currentTheme.value.name === "dark" ? "dark" : "light";
   options.forEach((option) => {
-    prefixCache.set(option.type, genPrefix(option.color, option.text));
+    prefixCache.set(option.type, option);
   });
 };
 //根据类型获取前缀
-const getPrefixByType = (option: CustomTreeOption) => {
+const getPrefixByType = (
+  option: CustomTreeOption,
+  isSelected: boolean,
+  c: string
+) => {
   if (!inputModel.value.showIcon) {
     return null;
   }
   if (inputModel.value.folderStyle) {
     if (option.type === "array" || option.type === "object") {
       const isExpanded = expandedKeys.value.includes(option.key);
-      return h(NIcon, null, {
-        default: () => h(isExpanded ? FolderOpenIcon : FolderIcon),
-      });
+      return h(
+        NIcon,
+        { color: c },
+        {
+          default: () => h(isExpanded ? FolderOpenIcon : FolderIcon),
+        }
+      );
     } else {
-      return h(NIcon, null, {
-        default: () => h(FileTrayIcon),
-      });
+      return h(
+        NIcon,
+        { color: c },
+        {
+          default: () => h(FileTrayIcon),
+        }
+      );
     }
   }
   const cacheKey = `${option.type}`;
-  return prefixCache.get(cacheKey) || null;
+  var op = prefixCache.get(cacheKey);
+  const theme = currentTheme.value.name === "dark" ? "dark" : "light";
+  var color = op[theme];
+  if (isSelected) {
+    if (theme === "dark") {
+      color = "black";
+    } else {
+      color = "white";
+    }
+  }
+  return genPrefix(color, op.text) || null;
 };
 //渲染后缀（array&object长度）
 const renderSuffix = ({ option }: { option: TreeOption }) => {
@@ -770,7 +822,19 @@ const genPrefix = (color: string, text: string) => {
 //节点属性，自定义事件
 const nodeProps = ({ option }: { option: TreeOption }) => {
   const customOption = option as CustomTreeOption;
+  const isSelected = selectedKeys.value.includes(customOption.key);
+  var bgColor = "#18a058";
+  if (currentTheme.value.name === "dark") {
+    bgColor = "#63e2b7";
+  }
   return {
+    style: isSelected
+      ? {
+          backgroundColor: bgColor,
+          borderRadius: "6px",
+          padding: "2px 8px",
+        }
+      : {},
     onClick() {
       if (options.showPannel.includes("leftClick")) {
         nodeClick(customOption);

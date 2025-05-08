@@ -31,8 +31,6 @@ const setColor = async () => {
   }
   if (options.colorStyle === "jt") {
     options.color = jtColor;
-  } else if (options.colorStyle === "jh") {
-    options.color = jhColor;
   } else {
     options.color = options.customColor;
   }
@@ -80,22 +78,13 @@ const isValidUrl = (str: string) => {
   }
 };
 const jtColor = [
-  { type: "key", color: "#0A9648", text: null },
-  { type: "array", color: "#F08080", text: "[arr]" },
-  { type: "object", color: "#008000", text: "{obj}" },
-  { type: "boolean", color: "#4dcebc", text: "0|1" },
-  { type: "number", color: "#ad4dce", text: "Num" },
-  { type: "null", color: "#808080", text: "Null" },
-  { type: "string", color: "#fb3b05", text: "Str" },
-];
-const jhColor = [
-  { type: "key", color: "#4a0", text: null },
-  { type: "array", color: "#f63", text: "[arr]" },
-  { type: "object", color: "#008000", text: "{obj}" },
-  { type: "boolean", color: "#09c", text: "0|1" },
-  { type: "number", color: "#cc00ff", text: "Num" },
-  { type: "null", color: "#bb4", text: "Null" },
-  { type: "string", color: "#fb3b05", text: "Str" },
+  { type: "key", dark: "#4CAF50", light: "#2E7D32", text: null },
+  { type: "array", dark: "#FF6B6B", light: "#EF5350", text: "[arr]" },
+  { type: "object", dark: "#66BB6A", light: "#388E3C", text: "{obj}" },
+  { type: "boolean", dark: "#4DB6AC", light: "#26A69A", text: "0|1" },
+  { type: "number", dark: "#CE93D8", light: "#AB47BC", text: "Num" },
+  { type: "null", dark: "#B0BEC5", light: "#757575", text: "Null" },
+  { type: "string", dark: "#FF8A65", light: "#F4511E", text: "Str" },
 ];
 const defaultOptions = {
   renderSwitch: true,

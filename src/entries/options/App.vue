@@ -157,9 +157,6 @@
               <n-radio value="jt">
                 {{ i18n("options_color_style_op_jt") }}
               </n-radio>
-              <n-radio value="jh">
-                {{ i18n("options_color_style_op_jh") }}
-              </n-radio>
               <n-radio value="custom">
                 {{ i18n("options_color_style_op_custom") }}
               </n-radio>
@@ -278,20 +275,38 @@ const colorColumns = [
     key: "type",
   },
   {
-    title: "color",
-    key: "color",
+    title: "dark",
+    key: "dark",
     render(row: any) {
       return h(
         NColorPicker,
         {
-          value: row.color,
+          value: row.dark,
           showAlpha: false,
           size: "small",
           onUpdateValue: (newValue) => {
-            row.color = newValue;
+            row.dark = newValue;
           },
         },
-        { default: () => row.color }
+        { default: () => row.dark }
+      );
+    },
+  },
+  {
+    title: "light",
+    key: "light",
+    render(row: any) {
+      return h(
+        NColorPicker,
+        {
+          value: row.light,
+          showAlpha: false,
+          size: "small",
+          onUpdateValue: (newValue) => {
+            row.light = newValue;
+          },
+        },
+        { default: () => row.dark }
       );
     },
   },
