@@ -129,10 +129,7 @@ export default defineBackground(() => {
     } else if (item.menuItemId === "jt-p") {
       getCurrentPageText()
         .then((text) => {
-          try {
-            JT.parse(text);
-            openJSONPage(text).catch(() => {});
-          } catch (error) {}
+          openJSONPage(text).catch(() => {});
         })
         .catch((error) => {
           console.error("Failed to get page text:", error);

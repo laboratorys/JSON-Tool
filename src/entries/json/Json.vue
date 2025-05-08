@@ -328,17 +328,25 @@ onMounted(() => {
   }
 });
 //设置输入历史数据
-const setInputData = () => {
+const setInputData = (d?: null) => {
   getItem("preference").then((v: any) => {
     inputModel.value.rememberData = v?.rememberData || false;
     if (inputModel.value.rememberData) {
       getItem("inputData").then((v: any) => {
         if (v !== null) {
-          inputStartValue.value = JT.stringify(JT.parse(v), null, "    ");
+          if (d != null) {
+            inputStartValue.value = d;
+          } else {
+            inputStartValue.value = JT.stringify(JT.parse(v), null, "    ");
+          }
         }
       });
     } else {
-      inputStartValue.value = JT.stringify(testData.value, null, "    ");
+      if (d != null) {
+        inputStartValue.value = d;
+      } else {
+        inputStartValue.value = JT.stringify(testData.value, null, "    ");
+      }
     }
   });
 };
@@ -347,11 +355,7 @@ if (isExtension.value) {
   browser.runtime.onMessage.addListener((message) => {
     if (message.action === "sendData" && message.from === "input") {
       dataSource.value = "input";
-      setInputData();
-    }
-    if (message.action === "sendData" && message.data !== null) {
-      dataSource.value = "input";
-      inputStartValue.value = message.data;
+      setInputData(message.data);
     }
   });
 } else {

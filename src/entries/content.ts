@@ -13,7 +13,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 export default defineContentScript({
-  matches: ["*://*/*", "file:///*"],
+  matches: ["*://*/*", "file:///*", "<all_urls>"],
   main() {
     const checkAndFormatJson = (options: any) => {
       const bodyText = getPageText();
