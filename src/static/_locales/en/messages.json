@@ -56,11 +56,11 @@
   "options_color_style_label": {
     "message": "Color style"
   },
-  "options_color_style_op_jt": {
-    "message": "JSON-Tool"
+  "options_color_style_op_simple": {
+    "message": "Simply"
   },
-  "options_color_style_op_jh": {
-    "message": "JSON-Handle"
+  "options_color_style_op_jt": {
+    "message": "Colorful"
   },
   "options_color_style_op_custom": {
     "message": "Custom"
@@ -82,6 +82,9 @@
   },
   "options_hot_keys_op_save": {
     "message": "CTRL+S(Save as file)"
+  },
+  "options_donate_title": {
+    "message": "Support me"
   },
   "options_hot_keys_label": {
     "message": "Hot keys"

@@ -29,7 +29,9 @@ const setColor = async () => {
   if (o) {
     options = o;
   }
-  if (options.colorStyle === "jt") {
+  if (options.colorStyle === "simple") {
+    options.color = simpleColor;
+  } else if (options.colorStyle === "jt") {
     options.color = jtColor;
   } else {
     options.color = options.customColor;
@@ -78,13 +80,22 @@ const isValidUrl = (str: string) => {
   }
 };
 const jtColor = [
-  { type: "key", dark: "#4CAF50", light: "#2E7D32", text: null },
-  { type: "array", dark: "#FF6B6B", light: "#EF5350", text: "[arr]" },
-  { type: "object", dark: "#66BB6A", light: "#388E3C", text: "{obj}" },
-  { type: "boolean", dark: "#4DB6AC", light: "#26A69A", text: "0|1" },
+  { type: "key", dark: "#63e2b7", light: "#006633", text: null },
+  { type: "array", dark: "#F0E68C", light: "#6B4E31", text: "[Arr]" },
+  { type: "object", dark: "#F06292", light: "#AD1457", text: "{Ojb}" },
+  { type: "boolean", dark: "#26A69A", light: "#004D40", text: "T|F" },
   { type: "number", dark: "#CE93D8", light: "#AB47BC", text: "Num" },
-  { type: "null", dark: "#B0BEC5", light: "#757575", text: "Null" },
-  { type: "string", dark: "#FF8A65", light: "#F4511E", text: "Str" },
+  { type: "null", dark: "#B0BEC5", light: "#616161", text: "Null" },
+  { type: "string", dark: "#E57373", light: "#B71C1C", text: "Str" },
+];
+const simpleColor = [
+  { type: "key", dark: "#FFFFFF", light: "#111111", text: null },
+  { type: "array", dark: "#FFFFFF", light: "#111111", text: "[Arr]" },
+  { type: "object", dark: "#FFFFFF", light: "#111111", text: "{Ojb}" },
+  { type: "boolean", dark: "#FC1E70", light: "#FC1E70", text: "T|F" },
+  { type: "number", dark: "#FC1E70", light: "#FC1E70", text: "Num" },
+  { type: "null", dark: "#B0BEC5", light: "#616161", text: "Null" },
+  { type: "string", dark: "#42B983", light: "#42B983", text: "Str" },
 ];
 const defaultOptions = {
   renderSwitch: true,
@@ -100,7 +111,7 @@ const defaultOptions = {
   treeExpandMode: true,
   showLengthMode: "arr",
   hotKeys: ["ctrl_k", "ctrl_s"],
-  colorStyle: "jt",
+  colorStyle: "simple",
   customColor: jtColor,
   color: jtColor,
 };

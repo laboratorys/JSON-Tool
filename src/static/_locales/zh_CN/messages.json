@@ -56,11 +56,11 @@
   "options_color_style_label": {
     "message": "配色风格"
   },
-  "options_color_style_op_jt": {
-    "message": "JSON-Tool"
+  "options_color_style_op_simple": {
+    "message": "简洁"
   },
-  "options_color_style_op_jh": {
-    "message": "JSON-Handle"
+  "options_color_style_op_jt": {
+    "message": "炫彩"
   },
   "options_color_style_op_custom": {
     "message": "自定义"
@@ -85,6 +85,9 @@
   },
   "options_hot_keys_op_save": {
     "message": "CTRL+S(另存为文件)"
+  },
+  "options_donate_title": {
+    "message": "支持我"
   },
   "copy_success_msg": {
     "message": "已复制！"
