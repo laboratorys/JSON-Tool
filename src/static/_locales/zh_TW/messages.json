@@ -80,6 +80,21 @@
   "options_hot_keys_label": {
     "message": "快捷鍵"
   },
+  "options_open_jt_op_window": {
+    "message": "視窗"
+  },
+  "options_open_jt_op_tab": {
+    "message": "標籤頁"
+  },
+  "options_theme_op_dark": {
+    "message": "深色"
+  },
+  "options_theme_op_light": {
+    "message": "淺色"
+  },
+  "options_theme_op_auto": {
+    "message": "系統"
+  },
   "options_hot_keys_op_search": {
     "message": "Ctrl+K (全域搜尋)"
   },
@@ -163,5 +178,20 @@
   },
   "json_link_tooltip": {
     "message": "按住 Ctrl 鍵開啟連結"
+  },
+  "json_image_error_msg": {
+    "message": "圖片載入失敗"
+  },
+  "json_context_menu_op_copy_path": {
+    "message": "複製路徑"
+  },
+  "json_context_menu_op_copy_key": {
+    "message": "複製鍵"
+  },
+  "json_context_menu_op_copy_value": {
+    "message": "複製值"
+  },
+  "json_context_menu_op_copy_origin_data": {
+    "message": "原始數據"
   }
 }

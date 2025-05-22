@@ -89,6 +89,21 @@
   "options_hot_keys_label": {
     "message": "Hot keys"
   },
+  "options_open_jt_op_window": {
+    "message": "Window"
+  },
+  "options_open_jt_op_tab": {
+    "message": "Tab"
+  },
+  "options_theme_op_dark": {
+    "message": "Dark"
+  },
+  "options_theme_op_light": {
+    "message": "Light"
+  },
+  "options_theme_op_auto": {
+    "message": "System"
+  },
   "copy_success_msg": {
     "message": "Copied!"
   },
@@ -163,5 +178,20 @@
   },
   "json_link_tooltip": {
     "message": "Click (hold Ctrl to open)"
+  },
+  "json_image_error_msg": {
+    "message": "Image failed to load"
+  },
+  "json_context_menu_op_copy_path": {
+    "message": "Copy path"
+  },
+  "json_context_menu_op_copy_key": {
+    "message": "Copy key"
+  },
+  "json_context_menu_op_copy_value": {
+    "message": "Copy value"
+  },
+  "json_context_menu_op_copy_origin_data": {
+    "message": "Original data"
   }
 }

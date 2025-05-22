@@ -80,6 +80,21 @@
   "options_hot_keys_label": {
     "message": "热键"
   },
+  "options_open_jt_op_window": {
+    "message": "窗口"
+  },
+  "options_open_jt_op_tab": {
+    "message": "标签页"
+  },
+  "options_theme_op_dark": {
+    "message": "深色"
+  },
+  "options_theme_op_light": {
+    "message": "浅色"
+  },
+  "options_theme_op_auto": {
+    "message": "系统"
+  },
   "options_hot_keys_op_search": {
     "message": "CTRL+K(全局搜索)"
   },
@@ -163,5 +178,20 @@
   },
   "json_link_tooltip": {
     "message": "按住 Ctrl 打开链接"
+  },
+  "json_image_error_msg": {
+    "message": "图片加载失败"
+  },
+  "json_context_menu_op_copy_path": {
+    "message": "复制路径"
+  },
+  "json_context_menu_op_copy_key": {
+    "message": "复制键"
+  },
+  "json_context_menu_op_copy_value": {
+    "message": "复制值"
+  },
+  "json_context_menu_op_copy_origin_data": {
+    "message": "原始数据"
   }
 }
