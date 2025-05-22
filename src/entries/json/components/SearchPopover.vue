@@ -18,7 +18,7 @@
         ref="patternRef"
         v-model:value="localPattern"
         placeholder=""
-        size="tiny"
+        size="small"
         :spellcheck="false"
         style="width: 60%">
         <template #prefix>

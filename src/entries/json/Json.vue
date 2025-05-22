@@ -33,7 +33,7 @@
   </n-flex>
   <n-back-top :right="100" />
   <n-tree
-    v-if="treeData.length > 0"
+    v-if="treeData.length > 0 && !isLoading"
     ref="treeInstRef"
     :show-line="true"
     :data="treeData"
@@ -81,6 +81,15 @@
     @open-options-tab="openOptionsTab"
     @save-as-file="saveAsFile"
     @handle-path-update-value="handlePathUpdateValue" />
+  <n-dropdown
+    trigger="manual"
+    placement="bottom-start"
+    :show="showDropdownRef"
+    :options="optionsRef"
+    :x="xRef"
+    :y="yRef"
+    @select="handleSelect"
+    @clickoutside="handleClickoutside" />
 </template>
 <script lang="ts" setup>
 import {
@@ -91,8 +100,10 @@ import {
   NBackTop,
   useLoadingBar,
   NPopover,
+  NDropdown,
   type TreeOption,
   type TreeInst,
+  type DropdownOption,
 } from "naive-ui";
 import {
   ref,
@@ -105,15 +116,17 @@ import {
   onUnmounted,
 } from "vue";
 import InputPanel from "./components/InputPanel.vue";
+import PicPanel from "./components/PicPanel.vue";
 import EnterInputCard from "./components/EnterInputCard.vue";
 import { debounce } from "lodash-es";
 import FolderIcon from "./icon/Folder.vue";
 import FolderOpenIcon from "./icon/FolderOpen.vue";
 import FileTrayIcon from "./icon/FileTray.vue";
+import CopyIcon from "./icon/Copy.vue";
+import ViewIcon from "./icon/View.vue";
 import LinkIcon from "./icon/Link.vue";
 import { currentTheme } from "@/utils/theme";
 import { getDiscreteApi } from "@/utils/message";
-import { i18n } from "@/utils/i18n";
 import {
   getItem,
   setItem,
@@ -125,6 +138,7 @@ import {
   isValidUrl,
   encodeKey,
   strClean,
+  isImageUrl,
 } from "@/utils/common";
 import {
   parseJsonWithErrorDetails,
@@ -133,7 +147,7 @@ import {
   setValueByPath,
   strExt,
 } from "@/utils/json";
-import SearchPopover from "./SearchPopover.vue";
+import SearchPopover from "./components/SearchPopover.vue";
 import {
   type CustomTreeOption,
   type JsonPathOption,
@@ -147,7 +161,10 @@ import {
   timestampToISO8601,
   formats,
 } from "@/utils/datetime";
+import useClipboard from "vue-clipboard3";
+const { toClipboard } = useClipboard();
 const loadingBar = useLoadingBar(); //加载条
+const isLoading = ref(true);
 const treeInstRef = ref<TreeInst | null>(null); //树实例
 const jsonData = ref<string | null>(null); //原始JSON数据
 const jsonParsedData = ref<any>(); //数据格式化JSON数据
@@ -184,8 +201,8 @@ const testData = ref<any[]>([
     always_free: true,
     author: "Libs",
     emoji: "🐔 🐝 🐲 ☎️ 🫠 🕵️‍♂️ 🦓",
-    features: [],
-    bugs: {},
+    since: 2025,
+    logo: "https://json-docs.noki.icu/image/logo.svg",
     links: ["https://github.com/laboratorys/JSON-Tool"],
     time: new Date(),
     introduce: `JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSON workflows and enhance developer productivity. Packed with smart features and essential utilities, it’s the perfect companion for developers, testers, and anyone working with structured data.`,
@@ -224,6 +241,56 @@ const convertOptions = [
     key: "toYaml",
   },
 ]; //文本格式转换
+//右键菜单
+const showDropdownRef = ref(false); //是否显示右键菜单
+const xRef = ref(0); //坐标-X轴
+const yRef = ref(0); //坐标-Y轴
+const optionsRef = ref<DropdownOption[]>([]); //下拉选项
+const rightClickTreeOption = ref<CustomTreeOption>();
+const dropdownOptions = [
+  {
+    label: i18n("json_context_menu_op_copy_path"),
+    key: "copyPath",
+    icon() {
+      return h(NIcon, null, {
+        default: () => h(CopyIcon),
+      });
+    },
+  },
+  {
+    label: i18n("json_context_menu_op_copy_key"),
+    key: "copyKey",
+    icon() {
+      return h(NIcon, null, {
+        default: () => h(CopyIcon),
+      });
+    },
+  },
+  {
+    label: i18n("json_context_menu_op_copy_value"),
+    key: "copyValue",
+    icon() {
+      return h(NIcon, null, {
+        default: () => h(CopyIcon),
+      });
+    },
+  },
+];
+const dropdownOptionsExt = [
+  {
+    type: "divider",
+    key: "d1",
+  },
+  {
+    label: i18n("json_context_menu_op_copy_origin_data"),
+    key: "viewOriginalPage",
+    icon() {
+      return h(NIcon, null, {
+        default: () => h(ViewIcon),
+      });
+    },
+  },
+];
 //JSON PATH提示背景色根据当前主题切换
 const bgCss = computed(() => {
   if (currentTheme.value.name === "dark") {
@@ -244,88 +311,118 @@ const isExtension = ref(
     browser.runtime.id != null
 );
 //生命周期钩子
-onMounted(() => {
-  //更新高度
-  debouncedUpdateHeight();
-  //监听ctrl+k事件
-  window.addEventListener("keydown", handleKeydown);
-  //监听窗口大小改变
+onMounted(async () => {
+  // 立即计算初始高度
+  updateTreeHeight(); // 非防抖，直接计算
   window.addEventListener("resize", debouncedUpdateHeight);
+  window.addEventListener("keydown", handleKeydown);
+
   if (showCollapsePannel.value) {
     clickStyle.value = { height: "80vh" };
   }
-  //读取配置信息
-  getItem("options").then((v: any) => {
-    if (v) {
-      Object.assign(options, v);
-    }
-    //根据配色初始化前缀缓存
-    initializePrefixCache(options.color);
-    options.color.forEach((item) => {
-      colorMap.set(item.type, item);
-    });
-    if (options.saveCollapseStatus) {
-      getItem("expandedKeys").then((ek: any) => {
-        if (ek) {
-          expandedKeys.value = ek;
-        }
+  try {
+    // 并行获取所有异步数据
+    const [optionsData, preferenceData, savedExpandedKeys, savedSelectedKeys] =
+      await Promise.all([
+        getItem("options"),
+        getItem("preference"),
+        getItem("expandedKeys"),
+        getItem("selectedKeys"),
+      ]);
+
+    // 更新配置
+    if (optionsData) {
+      Object.assign(options, optionsData);
+      initializePrefixCache(options.color);
+      options.color.forEach((item) => {
+        colorMap.set(item.type, item);
       });
     }
-  });
-  //获取偏好设置
-  getItem("preference").then((v: any) => {
-    inputModel.value.showIcon = v?.showIcon;
-    inputModel.value.showLength = v?.showLength || false;
-    inputModel.value.showValue = v?.showValue || true;
-    inputModel.value.folderStyle = v?.folderStyle || false;
-    inputModel.value.rememberData = v?.rememberData || false;
-    inputModel.value.showInputPanel = v?.showInputPanel || false;
-    inputModel.value.showCollapsePannel = v?.showCollapsePannel || false;
-    inputModel.value.clickStyle = v?.clickStyle || {};
-  });
-  //发送消息，页面准备就绪
-  window.parent.postMessage({ action: "ready" }, "*");
-  //接收来自content.ts的数据消息
-  window.addEventListener("message", (event) => {
-    if (event.data.action === "fromUrl") {
-      dataSource.value = "url";
-      loadingBar.start();
-    } else if (event.data.action === "displayJsonChunk") {
-      const { chunk, index, total } = event.data;
-      chunks.value[index] = chunk;
-      if (
-        chunks.value.length === total &&
-        chunks.value.every((c) => c !== undefined)
-      ) {
-        jsonData.value = chunks.value.join("");
-        chunks.value = []; // 清空
-        var parsedData = JT.parse(jsonData.value);
-        if (options.sortKeys) {
-          parsedData = optimizedJsonSort(parsedData, {
-            sortArrays: true,
-          });
-        }
-        jsonParsedData.value = parsedData;
-        treeData.value = buildTree(parsedData);
-        if (options.treeExpandMode && expandedKeys.value.length == 0) {
-          expandedKeys.value = allExpandableKeys.value;
-        }
-        initPannelAfterBuildTree();
-        loadingBar.finish();
-      }
+
+    // 更新偏好设置
+    if (preferenceData) {
+      inputModel.value = {
+        ...inputModel.value,
+        showIcon: preferenceData.showIcon ?? false,
+        showLength: preferenceData.showLength ?? false,
+        showValue: preferenceData.showValue ?? true,
+        folderStyle: preferenceData.folderStyle ?? false,
+        rememberData: preferenceData.rememberData ?? false,
+        showInputPanel: preferenceData.showInputPanel ?? false,
+        showCollapsePannel: preferenceData.showCollapsePannel ?? false,
+        clickStyle: preferenceData.clickStyle ?? {},
+      };
     }
-  });
-  if (isExtension.value) {
-    //发送消息到background.ts，当前Tab标签页准备就绪
-    browser.tabs.getCurrent((tab) => {
-      if (tab?.id) {
-        browser.runtime.sendMessage({ action: "ready", tabId: tab.id });
+
+    // 如果配置了保存折叠状态，更新展开的节点
+    if (options.saveCollapseStatus && savedExpandedKeys) {
+      expandedKeys.value = savedExpandedKeys;
+    }
+
+    // 处理数据来源并初始化输入
+    if (isExtension.value) {
+      // 浏览器扩展模式：发送就绪消息
+      browser.tabs.getCurrent((tab) => {
+        if (tab?.id) {
+          browser.runtime.sendMessage({ action: "ready", tabId: tab.id });
+        }
+      });
+
+      // 设置消息监听器以接收输入数据
+      browser.runtime.onMessage.addListener((message) => {
+        if (
+          message.action === "sendData" &&
+          message.from === "input" &&
+          dataSource.value !== "url"
+        ) {
+          dataSource.value = "input";
+          setInputData(message.data);
+        }
+      });
+    } else {
+      dataSource.value = "input";
+    }
+
+    // 初始化输入数据
+    await setInputData();
+
+    // 向父窗口发送就绪消息
+    window.parent.postMessage({ action: "ready" }, "*");
+
+    // 处理传入的 JSON 分片
+    window.addEventListener("message", (event) => {
+      if (event.data.action === "fromUrl") {
+        dataSource.value = "url";
+        loadingBar.start();
+      } else if (event.data.action === "displayJsonChunk") {
+        const { chunk, index, total } = event.data;
+        chunks.value[index] = chunk;
+        if (
+          chunks.value.length === total &&
+          chunks.value.every((c) => c !== undefined)
+        ) {
+          jsonData.value = chunks.value.join("");
+          chunks.value = [];
+          let parsedData = JT.parse(jsonData.value);
+          if (options.sortKeys) {
+            parsedData = optimizedJsonSort(parsedData, { sortArrays: true });
+          }
+          jsonParsedData.value = parsedData;
+          treeData.value = buildTree(parsedData);
+          if (options.treeExpandMode && expandedKeys.value.length === 0) {
+            expandedKeys.value = allExpandableKeys.value;
+          }
+          initPannelAfterBuildTree(savedSelectedKeys);
+          loadingBar.finish();
+        }
       }
     });
-  } else {
-    dataSource.value = "input";
-    setInputData();
+  } catch (error) {
+    loadingBar.error();
+    const { message } = getDiscreteApi();
+    message.error("data load failed!");
   }
+  isLoading.value = false;
 });
 //设置输入历史数据
 const setInputData = (d?: null) => {
@@ -353,7 +450,11 @@ const setInputData = (d?: null) => {
 if (isExtension.value) {
   //监听background.ts发来的数据消息
   browser.runtime.onMessage.addListener((message) => {
-    if (message.action === "sendData" && message.from === "input") {
+    if (
+      message.action === "sendData" &&
+      message.from === "input" &&
+      dataSource.value != "url"
+    ) {
       dataSource.value = "input";
       setInputData(message.data);
     }
@@ -600,56 +701,7 @@ const renderNodeContent = (
         }
       }
       content.push(
-        h(
-          NPopover,
-          {
-            trigger: "hover", // 悬停触发
-            placement: "bottom", // 弹出位置
-            showArrow: true, // 显示小箭头
-          },
-          {
-            trigger: () =>
-              h(
-                NButton,
-                {
-                  text: true,
-                  tag: "a",
-                  href: v,
-                  target: "_blank",
-                  style: {
-                    color: urlColor,
-                    marginLeft: "5px",
-                    lineHeight: "20px",
-                    verticalAlign: "middle",
-                    fontSize: "15px",
-                  },
-                  onClick: (e) => {
-                    if (!e.ctrlKey && !e.metaKey) {
-                      e.preventDefault();
-                    }
-                  },
-                },
-                {
-                  default: () => v,
-                  icon: () =>
-                    h(NIcon, null, {
-                      default: () => h(LinkIcon),
-                    }),
-                }
-              ),
-            default: () =>
-              h(
-                "div",
-                {
-                  style: {
-                    padding: "0px",
-                    maxWidth: "200px",
-                  },
-                },
-                i18n("json_link_tooltip")
-              ),
-          }
-        )
+        h(PicPanel, { url: String(v), urlColor: urlColor } as any, {})
       );
     } else {
       if (isSelected) {
@@ -840,13 +892,26 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
         nodeClick(customOption);
       }
     },
-    onMouseover() {
+    onMouseover(e: MouseEvent): void {
       //鼠标移入，显示JSON Path
       currentNodePath.value = customOption.path;
+      e.preventDefault();
     },
-    onMouseout() {
+    onMouseout(e: MouseEvent): void {
       //鼠标移出清空路径
       currentNodePath.value = "";
+      e.preventDefault();
+    },
+    onContextmenu(e: MouseEvent): void {
+      rightClickTreeOption.value = customOption;
+      optionsRef.value = dropdownOptions;
+      if (isExtension.value && dataSource.value == "url") {
+        optionsRef.value = optionsRef.value.concat(dropdownOptionsExt);
+      }
+      showDropdownRef.value = true;
+      xRef.value = e.clientX;
+      yRef.value = e.clientY;
+      e.preventDefault();
     },
   };
 };
@@ -877,9 +942,11 @@ const nodeClick = (customOption: CustomTreeOption | null) => {
   isBase64Ref.value = isBase64(inputModel.value.value);
   isEncodedRef.value = isEncoded(inputModel.value.value);
   //显示面板
-  showInputPanel.value = true;
-  showCollapsePannel.value = true;
-  clickStyle.value = {};
+  if (!options.showPannel.includes("onlyBtn")) {
+    showInputPanel.value = true;
+    showCollapsePannel.value = true;
+    clickStyle.value = {};
+  }
   syncPannelConfig();
   //设置选中key
   selectedKeys.value = [customOption.key];
@@ -1102,9 +1169,15 @@ const handleCancel = () => {
 const handleStartInput = () => {
   if (inputStartValue.value === null) return;
   if (textType.value === "yaml") {
-    inputStartValue.value = FormatConverter.yamlToJson(
-      String(inputStartValue.value)
-    );
+    try {
+      inputStartValue.value = FormatConverter.yamlToJson(
+        String(inputStartValue.value)
+      );
+    } catch (error) {
+      const { message } = getDiscreteApi();
+      message.error("Invalid YAML format!");
+      return;
+    }
   }
   const result: JsonParseResult = parseJsonWithErrorDetails(
     inputStartValue.value
@@ -1185,7 +1258,7 @@ const treeFilter = (pattern: string, node: TreeOption) => {
   if (result && customOption.key !== "JSON-0") {
     searchResultKeys.value.push(customOption.key);
   }
-  return result;
+  return true;
 };
 //监听搜索结果Key
 watch(
@@ -1324,7 +1397,7 @@ const handlePathUpdateValue = (value: string, option: JsonPathOption) => {
   nodeClick(option.treeOption);
 };
 //tree构建后初始化面板状态
-const initPannelAfterBuildTree = () => {
+const initPannelAfterBuildTree = (savedSelectedKeys?: any[]) => {
   const rootNode: CustomTreeOption | null = findNodeByKey(
     treeData.value,
     "JSON-0"
@@ -1349,23 +1422,15 @@ const initPannelAfterBuildTree = () => {
     showInputPanel.value = inputModel.value.showInputPanel;
     showCollapsePannel.value = inputModel.value.showCollapsePannel;
     clickStyle.value = inputModel.value.clickStyle;
-    if (showInputPanel.value) {
-      getItem("selectedKeys").then((sk: any) => {
-        if (sk && sk.length > 0) {
-          selectedKeys.value = sk;
-          const targetNode = findNodeByKey(
-            treeData.value,
-            selectedKeys.value[0]
-          );
-          if (targetNode != null) {
-            nodeClick(targetNode);
-          } else {
-            nodeClick(rootNode);
-          }
-        } else {
-          nodeClick(rootNode);
-        }
-      });
+    if (showInputPanel.value && savedSelectedKeys?.length > 0) {
+      const targetNode = findNodeByKey(treeData.value, savedSelectedKeys[0]);
+      if (targetNode != null) {
+        nodeClick(targetNode);
+      } else {
+        nodeClick(rootNode);
+      }
+    } else {
+      nodeClick(rootNode);
     }
   }
 };
@@ -1374,6 +1439,51 @@ const syncPannelConfig = () => {
   inputModel.value.showInputPanel = showInputPanel.value;
   inputModel.value.clickStyle = clickStyle.value;
   inputModel.value.showCollapsePannel = showCollapsePannel.value;
+};
+const handleSelect = (key: string | number) => {
+  showDropdownRef.value = false;
+  var copyText;
+  var msgText;
+  if (rightClickTreeOption.value) {
+    if (key == "copyPath") {
+      copyText = rightClickTreeOption.value.path;
+      msgText = "Path";
+    } else if (key == "copyKey") {
+      copyText = rightClickTreeOption.value.k;
+      msgText = "Key";
+    } else if (key == "copyValue") {
+      const current = getValueByPath(
+        jsonParsedData.value,
+        rightClickTreeOption.value.path
+      );
+      const type = getType(current);
+      if ((type === "array" || type === "object") && current !== null) {
+        copyText = JT.stringify(current, null, "    ");
+      } else {
+        copyText = current;
+      }
+      msgText = "Value";
+    } else if (key == "viewOriginalPage") {
+      browser.tabs.getCurrent((tab) => {
+        if (tab?.id) {
+          browser.runtime.sendMessage({
+            action: "viewOriginalPage",
+            tabId: tab.id,
+          });
+        }
+      });
+    }
+  }
+  if (copyText != null) {
+    try {
+      toClipboard(copyText);
+      const { message } = getDiscreteApi();
+      message.success(`${msgText} Copied success!`);
+    } catch (e) {}
+  }
+};
+const handleClickoutside = () => {
+  showDropdownRef.value = false;
 };
 </script>
 <style scoped>

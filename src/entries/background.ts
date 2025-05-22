@@ -1,15 +1,18 @@
 // background.ts
-import { getItem, defaultOptions, JT } from "@/utils/common";
+import { getItem, defaultOptions } from "@/utils/common";
 // 定义消息类型
-interface SendDataMessage {
-  action: "sendData";
-  data: any;
+interface SendDataMessage extends CommonMessage {
   from: "input";
 }
 
-interface ReadyMessage {
-  action: "ready";
+interface CommonMessage {
+  action: string;
+  data?: any;
+}
+
+interface ReadyMessage extends CommonMessage {
   tabId: number;
+  data?: never;
 }
 
 // 存储待发送消息的 Map，带时间戳
@@ -29,7 +32,7 @@ const actionAPI =
 // 发送消息函数
 const sendMessageToTab = (
   tabId: number,
-  message: SendDataMessage
+  message: CommonMessage
 ): Promise<void> => {
   return browser.tabs.sendMessage(tabId, message).catch(() => {});
 };
@@ -90,6 +93,26 @@ browser.runtime.onMessage.addListener((message: ReadyMessage, sender) => {
       sendMessageToTab(tabId, pendingEntry.message);
       pendingMessages.delete(tabId); // 成功发送后立即清理
     }
+  } else if (message.action === "viewOriginalPage" && sender.tab?.id) {
+    const message: CommonMessage = {
+      action: "viewOriginalPage",
+      data: null,
+    };
+    sendMessageToTab(sender.tab?.id, message);
+  } else if (message.action === "getOptions" && sender.tab?.id) {
+    getItem("options").then((v: any) => {
+      let options = defaultOptions;
+      if (v) {
+        options = v;
+      }
+      const message: CommonMessage = {
+        action: "syncOptions",
+        data: options,
+      };
+      if (sender.tab?.id) {
+        sendMessageToTab(sender.tab?.id, message);
+      }
+    });
   }
   cleanExpiredMessages(); // 每次处理消息时清理过期条目
 });
