@@ -1,10 +1,13 @@
 <template>
   <n-config-provider :theme="currentTheme" :theme-overrides="themeOverrides">
     <NFlex align="center" justify="center" :gap="12">
-      <n-image width="48" height="48" src="/logo.svg" /><n-h1
-        >JSON-Tool {{ i18n("options_card_title") }}</n-h1
-      ></NFlex
-    >
+      <n-image width="48" height="48" src="/logo.svg" />
+      <n-h1>
+        <n-badge :value="'v' + version" type="success" :offset="[25, 5]"
+          >JSON-Tool {{ i18n("options_card_title") }}
+        </n-badge></n-h1
+      >
+    </NFlex>
     <n-flex justify="center" style="padding: 10px">
       <n-card
         :title="i18n('options_card_title')"
@@ -14,6 +17,49 @@
         hoverable>
         <template #header-extra>
           <n-flex>
+            <n-popover trigger="hover" placement="bottom">
+              <template #trigger>
+                <n-button
+                  text
+                  style="font-size: 24px"
+                  @click="showChangeLog = true">
+                  <n-icon>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      viewBox="0 0 24 24">
+                      <g fill="none">
+                        <path
+                          d="M5.754 22.005a2.25 2.25 0 0 1-2.25-2.25L3.502 5.75a2.25 2.25 0 0 1 2.25-2.25l.747-.001l.001-.749a.75.75 0 0 1 .648-.743L7.25 2a.75.75 0 0 1 .743.648L8 2.75v.749H11V2.75a.75.75 0 0 1 .65-.743l.1-.007a.75.75 0 0 1 .744.648l.007.102v.749h2.997l.001-.749a.75.75 0 0 1 .648-.743L16.25 2a.75.75 0 0 1 .743.648L17 2.75v.749h.749a2.25 2.25 0 0 1 2.25 2.25l.001 11c0 .06-.007.12-.02.176l-.03.094l-.045.096l-.02.032a.685.685 0 0 1-.105.133l-4.504 4.505a.74.74 0 0 1-.085.073l.085-.073a.744.744 0 0 1-.105.087l-.088.052l-.116.047l-.114.026l-.053.006l-.055.002H5.754zM17.748 5H5.742a.75.75 0 0 0-.74.75l.002 14.004c0 .415.336.75.75.75h8.24l.001-2.254a2.25 2.25 0 0 1 2.096-2.245l.154-.005H18.5V5.75a.75.75 0 0 0-.75-.75zm-.31 12.5h-1.193a.75.75 0 0 0-.743.648l-.007.102v1.194l1.943-1.944zM7.25 16h3.998a.75.75 0 0 1 .102 1.493l-.102.007H7.25a.75.75 0 0 1-.102-1.493L7.25 16h3.998H7.25zm0-4h8.998a.75.75 0 0 1 .102 1.493l-.102.007H7.25a.75.75 0 0 1-.102-1.493L7.25 12h8.998H7.25zm0-4h8.998a.75.75 0 0 1 .102 1.493l-.102.007H7.25a.75.75 0 0 1-.102-1.493L7.25 8h8.998H7.25z"
+                          fill="currentColor"></path>
+                      </g>
+                    </svg>
+                  </n-icon>
+                </n-button>
+              </template>
+              <span>ChangeLog</span>
+            </n-popover>
+            <n-popover trigger="hover" placement="bottom">
+              <template #trigger>
+                <n-button
+                  text
+                  style="font-size: 24px"
+                  target="_blank"
+                  @click="showDonate = true">
+                  <n-icon>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      viewBox="0 0 512 512">
+                      <path
+                        d="M256 416c114.9 0 208-93.1 208-208S370.9 0 256 0S48 93.1 48 208s93.1 208 208 208zM233.8 97.4V80.6c0-9.2 7.4-16.6 16.6-16.6h11.1c9.2 0 16.6 7.4 16.6 16.6v17c15.5.8 30.5 6.1 43 15.4c5.6 4.1 6.2 12.3 1.2 17.1L306 145.6c-3.8 3.7-9.5 3.8-14 1c-5.4-3.4-11.4-5.1-17.8-5.1h-38.9c-9 0-16.3 8.2-16.3 18.3c0 8.2 5 15.5 12.1 17.6l62.3 18.7c25.7 7.7 43.7 32.4 43.7 60.1c0 34-26.4 61.5-59.1 62.4v16.8c0 9.2-7.4 16.6-16.6 16.6h-11.1c-9.2 0-16.6-7.4-16.6-16.6v-17c-15.5-.8-30.5-6.1-43-15.4c-5.6-4.1-6.2-12.3-1.2-17.1l16.3-15.5c3.8-3.7 9.5-3.8 14-1c5.4 3.4 11.4 5.1 17.8 5.1h38.9c9 0 16.3-8.2 16.3-18.3c0-8.2-5-15.5-12.1-17.6l-62.3-18.7c-25.7-7.7-43.7-32.4-43.7-60.1c.1-34 26.4-61.5 59.1-62.4zM480 352h-32.5c-19.6 26-44.6 47.7-73 64h63.8c5.3 0 9.6 3.6 9.6 8v16c0 4.4-4.3 8-9.6 8H73.6c-5.3 0-9.6-3.6-9.6-8v-16c0-4.4 4.3-8 9.6-8h63.8c-28.4-16.3-53.3-38-73-64H32c-17.7 0-32 14.3-32 32v96c0 17.7 14.3 32 32 32h448c17.7 0 32-14.3 32-32v-96c0-17.7-14.3-32-32-32z"
+                        fill="currentColor"></path>
+                    </svg>
+                  </n-icon>
+                </n-button>
+              </template>
+              <span>{{ i18n("options_donate_title") }}</span>
+            </n-popover>
             <n-popover trigger="hover" placement="bottom">
               <template #trigger>
                 <n-button
@@ -37,27 +83,6 @@
               </template>
               <span>GitHub</span>
             </n-popover>
-            <n-popover trigger="hover" placement="bottom">
-              <template #trigger>
-                <n-button
-                  text
-                  style="font-size: 24px"
-                  target="_blank"
-                  @click="showDonate = true">
-                  <n-icon>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      viewBox="0 0 512 512">
-                      <path
-                        d="M256 416c114.9 0 208-93.1 208-208S370.9 0 256 0S48 93.1 48 208s93.1 208 208 208zM233.8 97.4V80.6c0-9.2 7.4-16.6 16.6-16.6h11.1c9.2 0 16.6 7.4 16.6 16.6v17c15.5.8 30.5 6.1 43 15.4c5.6 4.1 6.2 12.3 1.2 17.1L306 145.6c-3.8 3.7-9.5 3.8-14 1c-5.4-3.4-11.4-5.1-17.8-5.1h-38.9c-9 0-16.3 8.2-16.3 18.3c0 8.2 5 15.5 12.1 17.6l62.3 18.7c25.7 7.7 43.7 32.4 43.7 60.1c0 34-26.4 61.5-59.1 62.4v16.8c0 9.2-7.4 16.6-16.6 16.6h-11.1c-9.2 0-16.6-7.4-16.6-16.6v-17c-15.5-.8-30.5-6.1-43-15.4c-5.6-4.1-6.2-12.3-1.2-17.1l16.3-15.5c3.8-3.7 9.5-3.8 14-1c5.4 3.4 11.4 5.1 17.8 5.1h38.9c9 0 16.3-8.2 16.3-18.3c0-8.2-5-15.5-12.1-17.6l-62.3-18.7c-25.7-7.7-43.7-32.4-43.7-60.1c.1-34 26.4-61.5 59.1-62.4zM480 352h-32.5c-19.6 26-44.6 47.7-73 64h63.8c5.3 0 9.6 3.6 9.6 8v16c0 4.4-4.3 8-9.6 8H73.6c-5.3 0-9.6-3.6-9.6-8v-16c0-4.4 4.3-8 9.6-8h63.8c-28.4-16.3-53.3-38-73-64H32c-17.7 0-32 14.3-32 32v96c0 17.7 14.3 32 32 32h448c17.7 0 32-14.3 32-32v-96c0-17.7-14.3-32-32-32z"
-                        fill="currentColor"></path>
-                    </svg>
-                  </n-icon>
-                </n-button>
-              </template>
-              <span>{{ i18n("options_donate_title") }}</span>
-            </n-popover>
             <n-modal v-model:show="showDonate">
               <n-card
                 style="width: 600px"
@@ -69,6 +94,22 @@
                 <n-flex justify="center">
                   <n-image width="300" src="/donate.jpg" />
                 </n-flex>
+              </n-card>
+            </n-modal>
+            <n-modal v-model:show="showChangeLog" :trap-focus="false">
+              <n-card
+                style="width: 600px"
+                :bordered="false"
+                size="huge"
+                role="dialog"
+                aria-modal="true">
+                <div
+                  v-html="changeLogHtml"
+                  style="
+                    max-height: 500px;
+                    overflow-y: auto;
+                    padding: 0px;
+                  "></div>
               </n-card>
             </n-modal>
           </n-flex>
@@ -108,7 +149,8 @@
               @update:value="checkShowBtn">
               <n-checkbox
                 value="leftClick"
-                :label="i18n('options_edit_pannel_op_click')" />
+                :label="i18n('options_edit_pannel_op_click')"
+                :disabled="true" />
               <n-checkbox
                 value="startup"
                 :label="i18n('options_edit_pannel_op_start')" />
@@ -130,17 +172,27 @@
           </n-form-item>
           <n-form-item :label="i18n('options_theme_label')">
             <n-radio-group v-model:value="options.theme" name="themeGroup">
-              <n-radio-button value="light"> Light </n-radio-button>
-              <n-radio-button value="dark"> Dark </n-radio-button>
-              <n-radio-button value="auto"> Auto </n-radio-button>
+              <n-radio-button value="light">
+                {{ i18n("options_theme_op_light") }}
+              </n-radio-button>
+              <n-radio-button value="dark">
+                {{ i18n("options_theme_op_dark") }}
+              </n-radio-button>
+              <n-radio-button value="auto">
+                {{ i18n("options_theme_op_auto") }}
+              </n-radio-button>
             </n-radio-group>
           </n-form-item>
           <n-form-item :label="i18n('options_open_jt_mode_label')">
             <n-radio-group
               v-model:value="options.openJTMode"
               name="jtModeGroup">
-              <n-radio value="window"> Window </n-radio>
-              <n-radio value="tab"> Tab </n-radio>
+              <n-radio value="window">
+                {{ i18n("options_open_jt_op_window") }}
+              </n-radio>
+              <n-radio value="tab">
+                {{ i18n("options_open_jt_op_tab") }}
+              </n-radio>
             </n-radio-group>
           </n-form-item>
           <n-form-item :label="i18n('options_parsing_engine_label')">
@@ -277,7 +329,7 @@ import {
   NFormItemGi,
   NCheckboxGroup,
   NModal,
-  NQrCode,
+  NBadge,
 } from "naive-ui";
 import { ref, reactive } from "vue";
 import {
@@ -289,23 +341,28 @@ import {
 import { setLocale, i18n } from "@/utils/i18n";
 import { getDiscreteApi } from "@/utils/message";
 import { currentTheme, themeOverrides, setTheme } from "@/utils/theme";
-
+import pkg from "../../../package.json";
+import { marked } from "marked";
+import mdContent from "../../../CHANGELOG.md?raw";
+const changeLogHtml = marked.parse(mdContent);
+const version = pkg.version;
 const formRef = ref<FormInst | null>(null);
 const options = reactive(structuredClone(defaultOptions));
 const showDonate = ref(false);
+const showChangeLog = ref(false);
 
 const rules = {};
 const langOptions = [
   {
-    label: "en",
+    label: "English",
     value: "en",
   },
   {
-    label: "zh_CN",
+    label: "简体中文",
     value: "zh_CN",
   },
   {
-    label: "zh_TW",
+    label: "正體中文",
     value: "zh_TW",
   },
 ];
@@ -396,7 +453,7 @@ const handleResetOptions = () => {
 };
 const checkShowBtn = (value: (string | number)[]) => {
   if (value.includes("onlyBtn")) {
-    options.showPannel = ["onlyBtn"];
+    options.showPannel = ["leftClick", "onlyBtn"];
   }
 };
 onMounted(() => {
