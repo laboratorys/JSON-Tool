@@ -138,7 +138,6 @@ import {
   isValidUrl,
   encodeKey,
   strClean,
-  isImageUrl,
 } from "@/utils/common";
 import {
   parseJsonWithErrorDetails,
@@ -247,50 +246,6 @@ const xRef = ref(0); //坐标-X轴
 const yRef = ref(0); //坐标-Y轴
 const optionsRef = ref<DropdownOption[]>([]); //下拉选项
 const rightClickTreeOption = ref<CustomTreeOption>();
-const dropdownOptions = [
-  {
-    label: i18n("json_context_menu_op_copy_path"),
-    key: "copyPath",
-    icon() {
-      return h(NIcon, null, {
-        default: () => h(CopyIcon),
-      });
-    },
-  },
-  {
-    label: i18n("json_context_menu_op_copy_key"),
-    key: "copyKey",
-    icon() {
-      return h(NIcon, null, {
-        default: () => h(CopyIcon),
-      });
-    },
-  },
-  {
-    label: i18n("json_context_menu_op_copy_value"),
-    key: "copyValue",
-    icon() {
-      return h(NIcon, null, {
-        default: () => h(CopyIcon),
-      });
-    },
-  },
-];
-const dropdownOptionsExt = [
-  {
-    type: "divider",
-    key: "d1",
-  },
-  {
-    label: i18n("json_context_menu_op_copy_origin_data"),
-    key: "viewOriginalPage",
-    icon() {
-      return h(NIcon, null, {
-        default: () => h(ViewIcon),
-      });
-    },
-  },
-];
 //JSON PATH提示背景色根据当前主题切换
 const bgCss = computed(() => {
   if (currentTheme.value.name === "dark") {
@@ -333,12 +288,11 @@ onMounted(async () => {
     // 更新配置
     if (optionsData) {
       Object.assign(options, optionsData);
-      initializePrefixCache(options.color);
-      options.color.forEach((item) => {
-        colorMap.set(item.type, item);
-      });
     }
-
+    initializePrefixCache(options.color);
+    options.color.forEach((item) => {
+      colorMap.set(item.type, item);
+    });
     // 更新偏好设置
     if (preferenceData) {
       inputModel.value = {
@@ -904,9 +858,51 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
     },
     onContextmenu(e: MouseEvent): void {
       rightClickTreeOption.value = customOption;
-      optionsRef.value = dropdownOptions;
+      optionsRef.value = [
+        {
+          label: i18n("json_context_menu_op_copy_path"),
+          key: "copyPath",
+          icon() {
+            return h(NIcon, null, {
+              default: () => h(CopyIcon),
+            });
+          },
+        },
+        {
+          label: i18n("json_context_menu_op_copy_key"),
+          key: "copyKey",
+          icon() {
+            return h(NIcon, null, {
+              default: () => h(CopyIcon),
+            });
+          },
+        },
+        {
+          label: i18n("json_context_menu_op_copy_value"),
+          key: "copyValue",
+          icon() {
+            return h(NIcon, null, {
+              default: () => h(CopyIcon),
+            });
+          },
+        },
+      ];
       if (isExtension.value && dataSource.value == "url") {
-        optionsRef.value = optionsRef.value.concat(dropdownOptionsExt);
+        optionsRef.value = optionsRef.value.concat([
+          {
+            type: "divider",
+            key: "d1",
+          },
+          {
+            label: i18n("json_context_menu_op_copy_origin_data"),
+            key: "viewOriginalPage",
+            icon() {
+              return h(NIcon, null, {
+                default: () => h(ViewIcon),
+              });
+            },
+          },
+        ]);
       }
       showDropdownRef.value = true;
       xRef.value = e.clientX;

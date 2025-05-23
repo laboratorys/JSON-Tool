@@ -20,7 +20,7 @@
         placeholder=""
         size="small"
         :spellcheck="false"
-        style="width: 60%">
+        style="width: 50%">
         <template #prefix>
           <n-icon>
             <svg
@@ -41,16 +41,17 @@
           </n-text>
         </template>
       </n-input>
+      <n-text type="error">no result</n-text>
       <n-divider vertical />
       <n-button text @click="moveDown">
         <n-icon>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 20 20">
+            viewBox="0 0 16 16">
             <g fill="none">
               <path
-                d="M4.207 12.267a.75.75 0 0 1 .026-1.06l5.25-5.002a.75.75 0 0 1 1.035 0l5.25 5.001a.75.75 0 0 1-1.034 1.086L10 7.784l-4.734 4.508a.75.75 0 0 1-1.06-.025z"
+                d="M8.5 2.5a.5.5 0 1 0-1 0v9.697L3.872 8.166a.5.5 0 1 0-.744.668l4.5 5a.5.5 0 0 0 .744 0l4.5-5a.5.5 0 0 0-.744-.668L8.5 12.197V2.5z"
                 fill="currentColor"></path>
             </g>
           </svg>
@@ -61,10 +62,10 @@
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 20 20">
+            viewBox="0 0 16 16">
             <g fill="none">
               <path
-                d="M15.794 7.733a.75.75 0 0 1-.026 1.06l-5.25 5.001a.75.75 0 0 1-1.035 0l-5.25-5a.75.75 0 0 1 1.034-1.087l4.734 4.509l4.733-4.51a.75.75 0 0 1 1.06.027z"
+                d="M7.5 13.5a.5.5 0 0 0 1 0V3.803l3.628 4.031a.5.5 0 0 0 .744-.668l-4.5-5a.5.5 0 0 0-.744 0l-4.5 5a.5.5 0 0 0 .744.668L7.5 3.803V13.5z"
                 fill="currentColor"></path>
             </g>
           </svg>

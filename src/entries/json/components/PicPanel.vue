@@ -38,6 +38,7 @@ import { NImage, NIcon, NPopover, NButton, NText } from "naive-ui";
 import { i18n } from "@/utils/i18n";
 import { ref } from "vue";
 import LinkIcon from "../icon/Link.vue";
+import { isImageUrl } from "@/utils/common";
 const showTips = ref(true);
 const showPic = ref(false);
 const props = defineProps<{
