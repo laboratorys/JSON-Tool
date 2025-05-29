@@ -193,5 +193,11 @@
   },
   "json_context_menu_op_copy_origin_data": {
     "message": "原始數據"
+  },
+  "json_search_result_error_msg": {
+    "message": "無結果"
+  },
+  "json_search_placeholder": {
+    "message": "查找（使用↑↓查看）"
   }
 }

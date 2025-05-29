@@ -193,5 +193,11 @@
   },
   "json_context_menu_op_copy_origin_data": {
     "message": "Original data"
+  },
+  "json_search_result_error_msg": {
+    "message": "No result"
+  },
+  "json_search_placeholder": {
+    "message": "Find(use ↑↓ to view)"
   }
 }

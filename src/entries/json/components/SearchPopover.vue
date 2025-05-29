@@ -12,14 +12,15 @@
     <template #trigger>
       <span>{{ triggerText }}</span>
     </template>
-    <n-flex align="baseline">
+    <n-flex align="center">
       <n-input
         class="search-input"
         ref="patternRef"
         v-model:value="localPattern"
-        placeholder=""
+        :placeholder="i18n('json_search_placeholder')"
         size="small"
         :spellcheck="false"
+        @keyup.enter="keyEnter"
         style="width: 50%">
         <template #prefix>
           <n-icon>
@@ -41,22 +42,12 @@
           </n-text>
         </template>
       </n-input>
-      <n-text type="error">no result</n-text>
+      <n-text
+        :type="localPattern ? 'error' : 'default'"
+        v-if="allKeysLength == 0"
+        >{{ i18n("json_search_result_error_msg") }}</n-text
+      >
       <n-divider vertical />
-      <n-button text @click="moveDown">
-        <n-icon>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 16 16">
-            <g fill="none">
-              <path
-                d="M8.5 2.5a.5.5 0 1 0-1 0v9.697L3.872 8.166a.5.5 0 1 0-.744.668l4.5 5a.5.5 0 0 0 .744 0l4.5-5a.5.5 0 0 0-.744-.668L8.5 12.197V2.5z"
-                fill="currentColor"></path>
-            </g>
-          </svg>
-        </n-icon>
-      </n-button>
       <n-button text @click="moveUp">
         <n-icon>
           <svg
@@ -66,6 +57,20 @@
             <g fill="none">
               <path
                 d="M7.5 13.5a.5.5 0 0 0 1 0V3.803l3.628 4.031a.5.5 0 0 0 .744-.668l-4.5-5a.5.5 0 0 0-.744 0l-4.5 5a.5.5 0 0 0 .744.668L7.5 3.803V13.5z"
+                fill="currentColor"></path>
+            </g>
+          </svg>
+        </n-icon>
+      </n-button>
+      <n-button text @click="moveDown">
+        <n-icon>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 16 16">
+            <g fill="none">
+              <path
+                d="M8.5 2.5a.5.5 0 1 0-1 0v9.697L3.872 8.166a.5.5 0 1 0-.744.668l4.5 5a.5.5 0 0 0 .744 0l4.5-5a.5.5 0 0 0-.744-.668L8.5 12.197V2.5z"
                 fill="currentColor"></path>
             </g>
           </svg>
@@ -98,7 +103,7 @@ import {
   NButton,
   NText,
 } from "naive-ui";
-
+import { i18n } from "@/utils/i18n";
 defineProps<{
   triggerText?: string;
   allKeysLength?: number;
@@ -152,6 +157,9 @@ const handleClose = () => {
 };
 const handleOutSide = () => {
   showSearch.value = false;
+};
+const keyEnter = () => {
+  moveDown();
 };
 onMounted(() => {
   updateSearchPosition();

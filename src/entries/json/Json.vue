@@ -15,7 +15,7 @@
       :allKeysLength="searchResultKeys.length"
       :show="showSearch"
       @update:show="(value: boolean) => showSearch = value"
-      @update:pattern="(value: string) => { pattern = value; searchResultKeys = []; }"
+      @update:pattern="handleUpdatePattern"
       @moveUp="handleMoveUp"
       @moveDown="handleMoveDown" />
     <EnterInputCard
@@ -781,23 +781,31 @@ const renderLabel = ({ option }: { option: any }) => {
       : [];
   return renderNodeContent(option, []);
 };
+const handleUpdatePattern = (value: string) => {
+  pattern.value = value;
+  searchResultKeys.value = [];
+};
 //处理搜索结果上移
 const handleMoveUp = () => {
-  if (currentKeyIndex.value < searchResultKeys.value.length - 1) {
-    currentKeyIndex.value = currentKeyIndex.value + 1;
-    currentKey.value = searchResultKeys.value[currentKeyIndex.value];
-    selectedKeys.value = [currentKey.value];
-    treeInstRef.value?.scrollTo({ key: currentKey.value });
+  if (searchResultKeys.value.length == 0) return;
+  if (currentKeyIndex.value == 0) {
+    currentKeyIndex.value = searchResultKeys.value.length;
   }
+  currentKeyIndex.value = currentKeyIndex.value - 1;
+  currentKey.value = searchResultKeys.value[currentKeyIndex.value];
+  selectedKeys.value = [currentKey.value];
+  treeInstRef.value?.scrollTo({ key: currentKey.value });
 };
 //处理搜索结果下移
 const handleMoveDown = () => {
-  if (currentKeyIndex.value > 0) {
-    currentKeyIndex.value = currentKeyIndex.value - 1;
-    currentKey.value = searchResultKeys.value[currentKeyIndex.value];
-    selectedKeys.value = [currentKey.value];
-    treeInstRef.value?.scrollTo({ key: currentKey.value });
+  if (searchResultKeys.value.length == 0) return;
+  if (currentKeyIndex.value == searchResultKeys.value.length - 1) {
+    currentKeyIndex.value = -1;
   }
+  currentKeyIndex.value = currentKeyIndex.value + 1;
+  currentKey.value = searchResultKeys.value[currentKeyIndex.value];
+  selectedKeys.value = [currentKey.value];
+  treeInstRef.value?.scrollTo({ key: currentKey.value });
 };
 //初始化前缀缓存，避免每次都加载
 const initializePrefixCache = (options: any[]) => {
@@ -1478,7 +1486,11 @@ const initPannelAfterBuildTree = (savedSelectedKeys?: any[]) => {
     showInputPanel.value = inputModel.value.showInputPanel;
     showCollapsePannel.value = inputModel.value.showCollapsePannel;
     clickStyle.value = inputModel.value.clickStyle;
-    if (showInputPanel.value && savedSelectedKeys?.length > 0) {
+    if (
+      showInputPanel.value &&
+      savedSelectedKeys?.length &&
+      savedSelectedKeys?.length > 0
+    ) {
       const targetNode = findNodeByKey(treeData.value, savedSelectedKeys[0]);
       if (targetNode != null) {
         nodeClick(targetNode);
