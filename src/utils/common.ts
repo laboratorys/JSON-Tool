@@ -133,7 +133,7 @@ const isImageUrl = async (url: string) => {
     const contentType = response.headers.get("Content-Type");
     return contentType && contentType.startsWith("image/");
   } catch (error) {
-    console.error("Error checking URL:", error);
+    // console.error("Error checking URL:", error);
     return false;
   }
 };

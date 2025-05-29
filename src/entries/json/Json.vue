@@ -51,11 +51,71 @@
     :on-update:expanded-keys="updatePrefixWithExpaned" />
   <n-flex
     class="pathTips"
-    justify="start"
+    justify="space-between"
+    align="center"
     :style="bgCss"
     v-if="treeData.length > 0">
-    {{ currentNodePath }}</n-flex
-  >
+    <div class="path-content">{{ currentNodePath }}</div>
+    <n-flex align="center" class="action-buttons" :size="4">
+      <n-button
+        text
+        class="action-button"
+        tag="a"
+        href="https://json-docs.noki.icu"
+        target="_blank">
+        <n-icon>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 20 20">
+            <g fill="none">
+              <path
+                d="M11.002 2.388a1.5 1.5 0 0 0-2.005 0l-5.5 4.942A1.5 1.5 0 0 0 3 8.445V15.5A1.5 1.5 0 0 0 4.5 17h2A1.5 1.5 0 0 0 8 15.5v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 0 1.5 1.5h2a1.5 1.5 0 0 0 1.5-1.5V8.445a1.5 1.5 0 0 0-.497-1.115l-5.5-4.942z"
+                fill="currentColor"></path>
+            </g>
+          </svg>
+        </n-icon>
+      </n-button>
+      <n-button text class="action-button" tag="a" @click="handleThemeChange">
+        <n-icon :component="currentThemeIcon"></n-icon>
+      </n-button>
+      <n-dropdown
+        trigger="hover"
+        :options="langOptions"
+        @select="handleLangSelect">
+        <n-button text class="action-button" tag="a">
+          <n-icon>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 24 24">
+              <path
+                d="M12.87 15.07l-2.54-2.51l.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5l3.11 3.11l.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"
+                fill="currentColor"></path>
+            </svg>
+          </n-icon>
+        </n-button>
+      </n-dropdown>
+      <n-button
+        text
+        class="action-button github-button"
+        tag="a"
+        href="https://github.com/laboratorys/JSON-Tool"
+        target="_blank">
+        <n-icon>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 32 32">
+            <path
+              d="M16 2a14 14 0 0 0-4.43 27.28c.7.13 1-.3 1-.67v-2.38c-3.89.84-4.71-1.88-4.71-1.88a3.71 3.71 0 0 0-1.62-2.05c-1.27-.86.1-.85.1-.85a2.94 2.94 0 0 1 2.14 1.45a3 3 0 0 0 4.08 1.16a2.93 2.93 0 0 1 .88-1.87c-3.1-.36-6.37-1.56-6.37-6.92a5.4 5.4 0 0 1 1.44-3.76a5 5 0 0 1 .14-3.7s1.17-.38 3.85 1.43a13.3 13.3 0 0 1 7 0c2.67-1.81 3.84-1.43 3.84-1.43a5 5 0 0 1 .14 3.7a5.4 5.4 0 0 1 1.44 3.76c0 5.38-3.27 6.56-6.39 6.91a3.33 3.33 0 0 1 .95 2.59v3.84c0 .46.25.81 1 .67A14 14 0 0 0 16 2z"
+              fill-rule="evenodd"
+              fill="currentColor"></path>
+          </svg>
+        </n-icon>
+      </n-button>
+    </n-flex>
+  </n-flex>
   <InputPanel
     v-if="showInputPanel"
     :input-model="inputModel"
@@ -99,7 +159,6 @@ import {
   NButton,
   NBackTop,
   useLoadingBar,
-  NPopover,
   NDropdown,
   type TreeOption,
   type TreeInst,
@@ -124,8 +183,8 @@ import FolderOpenIcon from "./icon/FolderOpen.vue";
 import FileTrayIcon from "./icon/FileTray.vue";
 import CopyIcon from "./icon/Copy.vue";
 import ViewIcon from "./icon/View.vue";
-import LinkIcon from "./icon/Link.vue";
-import { currentTheme } from "@/utils/theme";
+import CheckIcon from "./icon/Check.vue";
+import { currentTheme, currentThemeIcon, changeTheme } from "@/utils/theme";
 import { getDiscreteApi } from "@/utils/message";
 import {
   getItem,
@@ -161,6 +220,7 @@ import {
   formats,
 } from "@/utils/datetime";
 import useClipboard from "vue-clipboard3";
+import { i18n, currentLocale, changeLocale } from "@/utils/i18n";
 const { toClipboard } = useClipboard();
 const loadingBar = useLoadingBar(); //加载条
 const isLoading = ref(true);
@@ -202,9 +262,9 @@ const testData = ref<any[]>([
     emoji: "🐔 🐝 🐲 ☎️ 🫠 🕵️‍♂️ 🦓",
     since: 2025,
     logo: "https://json-docs.noki.icu/image/logo.svg",
-    links: ["https://github.com/laboratorys/JSON-Tool"],
+    links: ["https://json-docs.noki.icu"],
     time: new Date(),
-    introduce: `JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSON workflows and enhance developer productivity. Packed with smart features and essential utilities, it’s the perfect companion for developers, testers, and anyone working with structured data.`,
+    introduce: `JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSON workflows and enhance developer productivity. Packed with smart features and essential utilities, it's the perfect companion for developers, testers, and anyone working with structured data.`,
   },
 ]); //测试数据
 const yamlTestData = ref<string>(
@@ -1312,7 +1372,7 @@ const saveAsFile = () => {
       {
         url: url,
         filename: filename, // 建议文件名
-        saveAs: true, // 启用“另存为”对话框
+        saveAs: true, // 启用"另存为"对话框
       },
       () => {
         if (browser.runtime.lastError) {
@@ -1481,6 +1541,38 @@ const handleSelect = (key: string | number) => {
 const handleClickoutside = () => {
   showDropdownRef.value = false;
 };
+const handleThemeChange = async () => {
+  await changeTheme();
+};
+const handleLangSelect = (key: string) => {
+  changeLocale(key);
+};
+const renderLangIcon = (isChecked: boolean, icon: Component) => {
+  return () => {
+    return !isChecked
+      ? null
+      : h(NIcon, null, {
+          default: () => h(icon),
+        });
+  };
+};
+const langOptions = computed(() => [
+  {
+    label: "English",
+    key: "en",
+    icon: renderLangIcon(currentLocale.value === "en", CheckIcon),
+  },
+  {
+    label: "简体中文",
+    key: "zh_CN",
+    icon: renderLangIcon(currentLocale.value === "zh_CN", CheckIcon),
+  },
+  {
+    label: "正體中文",
+    key: "zh_TW",
+    icon: renderLangIcon(currentLocale.value === "zh_TW", CheckIcon),
+  },
+]);
 </script>
 <style scoped>
 .pathTips {
@@ -1491,6 +1583,34 @@ const handleClickoutside = () => {
   z-index: 15;
   left: 0;
   bottom: 0;
-  padding: 0.2em 1em 0;
+  padding: 0.2em 0.5em 0 1em;
+}
+
+.path-content {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 10px;
+  min-width: 0;
+}
+
+.action-buttons {
+  flex-shrink: 0;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.action-button {
+  font-size: 20px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.github-button {
+  padding-right: 8px;
 }
 </style>

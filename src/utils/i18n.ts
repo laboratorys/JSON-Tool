@@ -30,7 +30,7 @@ const loadAllLocales = (() => {
     }
   };
 })();
-function setLocale(locale: string) {
+const setLocale = (locale: string) => {
   if (supportedLocales.includes(locale)) {
     currentLocale.value = locale;
     getItem("options").then((v: any) => {
@@ -42,7 +42,21 @@ function setLocale(locale: string) {
       //setItem("options", options);
     });
   }
-}
+};
+
+const changeLocale = (locale: string) => {
+  if (supportedLocales.includes(locale)) {
+    currentLocale.value = locale;
+    getItem("options").then((v: any) => {
+      let options = structuredClone(defaultOptions);
+      if (v) {
+        options = v;
+      }
+      options.lang = locale;
+      setItem("options", options);
+    });
+  }
+};
 
 const i18n = (key: string) => {
   return messages[currentLocale.value]?.[key]?.message || key;
@@ -66,6 +80,7 @@ const initLocale = async () => {
 export {
   currentLocale,
   setLocale,
+  changeLocale,
   i18n,
   supportedLocales,
   initLocale,
