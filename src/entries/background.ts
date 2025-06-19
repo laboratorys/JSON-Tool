@@ -68,6 +68,16 @@ const openJSONPage = (data: any): Promise<void> => {
   });
 };
 
+const openToolsPage = (): Promise<void> => {
+  const tools_url = browser.runtime.getURL("/tools.html");
+
+  return getItem("options").then((v: any) => {
+    return browser.tabs
+      .create({ url: tools_url, active: true })
+      .then((newTab) => {});
+  });
+};
+
 // 清理过期条目
 const cleanExpiredMessages = () => {
   const now = Date.now();
@@ -140,6 +150,11 @@ export default defineBackground(() => {
           title: "JSON Tool (page)",
           contexts: ["page"],
         });
+        browser.contextMenus.create({
+          id: "jt-d",
+          title: "Dev-Tool",
+          contexts: ["action"],
+        });
       }
     });
     var options_url = browser.runtime.getURL("/options.html");
@@ -157,12 +172,27 @@ export default defineBackground(() => {
         .catch((error) => {
           console.error("Failed to get page text:", error);
         });
+    } else if (item.menuItemId === "jt-d") {
+      openToolsPage().catch(() => {});
     }
   });
   actionAPI.onClicked.addListener(() => {
     openJSONPage(null).catch(() => {});
   });
+  browser.commands.onCommand.addListener(function (command) {
+    if (command && command === "open_json_tool") {
+      openJSONPage(null).catch(() => {});
+    } else if (command && command === "open_dev_tool") {
+      browser.tabs.query({ active: true }).then((tabs) => {
+        if (tabs[0]?.id) {
+          //browser.tabs.sendMessage(tabs[0].id, { action: "show_dev_tool" });
+          browser.tabs.create({ url: `/tools.html`, active: true });
+        }
+      });
+    }
+  });
 });
+
 const getCurrentPageText = () => {
   return new Promise((resolve, reject) => {
     browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {

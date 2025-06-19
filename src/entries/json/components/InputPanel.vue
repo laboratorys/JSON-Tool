@@ -337,7 +337,11 @@
                 </svg>
               </n-icon>
             </template>
-            {{ i18n("json_btn_expand_node") }}
+            {{
+              expandedKeys.includes(selectedKeys[0])
+                ? i18n("json_btn_collapse_node")
+                : i18n("json_btn_expand_node")
+            }}
           </n-button>
           <n-button size="tiny" @click="handleScrollTo">
             <template #icon>
@@ -441,6 +445,7 @@ defineProps<{
   isEncodedRef: boolean;
   isDateTime: boolean;
   expandedKeys: (string | number)[];
+  selectedKeys: (string | number)[];
   isExtension: boolean;
   allJsonPaths: JsonPathOption[];
 }>();
@@ -525,9 +530,12 @@ const handlePathUpdateValue = (value: string, option: JsonPathOption) =>
   z-index: 10;
   right: var(--panel-right);
   top: 1em;
-  box-shadow: 4px 4px 9px rgba(0, 0, 50, 0.2),
+  box-shadow:
+    4px 4px 9px rgba(0, 0, 50, 0.2),
     -3px -3px 30px rgba(88, 88, 188, 0.1) inset;
-  transition: height 0.2s ease-out, width 0.2s ease-out;
+  transition:
+    height 0.2s ease-out,
+    width 0.2s ease-out;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

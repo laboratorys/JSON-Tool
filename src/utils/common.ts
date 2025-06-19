@@ -1,6 +1,5 @@
 import JSON5 from "json5";
 import localForage from "localforage";
-import { ref } from "vue";
 const getItem: any = async (k: string) => {
   return await localForage.getItem(`${k}`);
 };
@@ -105,14 +104,15 @@ const defaultOptions = {
   showPannel: ["leftClick"],
   lang: "en",
   theme: "auto",
-  openJTMode: "window",
+  openJTMode: "tab",
   parsingEngine: "json",
   saveCollapseStatus: true,
   sortKeys: false,
   treeExpandMode: true,
   showLengthMode: "arr",
-  hotKeys: ["ctrl_k", "ctrl_s"],
-  colorStyle: "simple",
+  hotKeys: ["ctrl_k", "ctrl_s", "alt_shift_j", "alt_shift_d"],
+  expandIconStyle: "default",
+  colorStyle: "jt",
   customColor: jtColor,
   color: jtColor,
 };

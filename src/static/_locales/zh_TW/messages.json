@@ -65,6 +65,15 @@
   "options_color_style_op_custom": {
     "message": "自訂"
   },
+  "options_expand_icon_style_label": {
+    "message": "展開图标"
+  },
+  "options_expand_icon_style_op_default": {
+    "message": ">"
+  },
+  "options_expand_icon_style_op_addsub": {
+    "message": "+-"
+  },
   "options_color_label": {
     "message": "配色方案"
   },
@@ -100,6 +109,12 @@
   },
   "options_hot_keys_op_save": {
     "message": "Ctrl+S (另存新檔)"
+  },
+  "options_hot_keys_jt_open": {
+    "message": "ALT+SHIFT+J(打開JSON-Tool)"
+  },
+  "options_hot_keys_dt_open": {
+    "message": "ALT+SHIFT+D(打開Dev-Tool)"
   },
   "options_donate_title": {
     "message": "支持我"
@@ -144,7 +159,10 @@
     "message": "摺疊全部"
   },
   "json_btn_expand_node": {
-    "message": "展開至選取節點"
+    "message": "展開選取節點"
+  },
+  "json_btn_collapse_node": {
+    "message": "摺疊選取節點"
   },
   "json_btn_scroll_to_node": {
     "message": "捲動至選取節點"

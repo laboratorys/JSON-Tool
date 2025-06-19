@@ -1,5 +1,5 @@
 {
-  "name": "JSON-Tool",
+  "name": "json-tool",
   "description": "A JSON formatting tool.",
   "private": true,
   "version": "0.0.6",
@@ -25,28 +25,42 @@
     "build:web": "vite build -c vite.config.web.ts"
   },
   "dependencies": {
+    "@highlightjs/vue-plugin": "^2.1.0",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitejs/plugin-vue-jsx": "^4.2.0",
+    "@vueuse/core": "^13.3.0",
+    "crypto-js": "^4.2.0",
+    "date-fns": "^4.1.0",
+    "highlight.js": "^11.11.1",
+    "js-beautify": "^1.15.4",
     "js-yaml": "^4.1.0",
     "json5": "^2.2.3",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
     "marked": "^15.0.12",
+    "pinia": "^3.0.2",
+    "pinia-plugin-persistedstate": "^4.3.0",
+    "sql-formatter": "^15.6.4",
+    "uuid": "^11.1.0",
     "vue": "^3.5.14",
-    "vue-clipboard3": "^2.0.0"
+    "vue-clipboard3": "^2.0.0",
+    "xml-formatter": "^3.6.6"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.323",
+    "@types/crypto-js": "^4.2.2",
     "@types/js-yaml": "^4.0.9",
     "@types/lodash-es": "^4.17.12",
     "@wxt-dev/module-vue": "^1.0.2",
     "naive-ui": "^2.41.0",
+    "prettier": "^3.5.3",
+    "sass-embedded": "^1.89.2",
     "typescript": "5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-static-copy": "^3.0.0",
     "vitepress": "^1.6.3",
     "vue-tsc": "^2.2.10",
-    "wxt": "^0.20.6"
+    "wxt": "^0.20.7"
   },
-  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
 }

@@ -4,37 +4,59 @@ let content: string;
 const getPageText = () => {
   return (document.body.innerText || document.body.textContent)?.trim();
 };
-// 监听来自 background 的消息
-browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "getPageText") {
-    const text = getPageText();
-    sendResponse({ text });
-  } else if (request.action === "viewOriginalPage") {
-    if (
-      window.document.getElementsByTagName("pre") &&
-      window.document.getElementsByTagName("pre")[0]
-    ) {
-      window.document.getElementsByTagName("iframe")[0].style.display = "none";
-      window.document.getElementsByTagName("pre")[0].style.display = "block";
-    } else {
-      document.body.innerHTML = content;
-    }
-  } else if (request.action === "syncOptions") {
-    if (request.data.renderSwitch) {
-      if (document.readyState === "complete") {
-        checkAndFormatJson(request.data);
-      } else {
-        window.addEventListener("load", () => {
-          checkAndFormatJson(request.data);
-        });
-      }
-    }
-  }
-});
 export default defineContentScript({
   matches: ["*://*/*", "file:///*", "<all_urls>"],
-  main() {
+  main(ctx) {
+    //var ui: any;
     browser.runtime.sendMessage({ action: "getOptions" });
+    // 监听来自 background 的消息
+    browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action === "getPageText") {
+        const text = getPageText();
+        sendResponse({ text });
+      } else if (request.action === "viewOriginalPage") {
+        if (
+          window.document.getElementsByTagName("pre") &&
+          window.document.getElementsByTagName("pre")[0]
+        ) {
+          window.document.getElementsByTagName("iframe")[0].style.display =
+            "none";
+          window.document.getElementsByTagName("pre")[0].style.display =
+            "block";
+        } else {
+          document.body.innerHTML = content;
+        }
+      } else if (request.action === "syncOptions") {
+        if (request.data.renderSwitch) {
+          if (document.readyState === "complete") {
+            checkAndFormatJson(request.data);
+          } else {
+            window.addEventListener("load", () => {
+              checkAndFormatJson(request.data);
+            });
+          }
+        }
+      } /** else if (request.action === "show_dev_tool") {
+        if (ui) {
+          ui.remove();
+          ui = null;
+        } else {
+          ui = createIframeUi(ctx, {
+            page: `/tools.html`,
+            position: "modal",
+            anchor: "body",
+            zIndex: 9999,
+            onMount: (wrapper, iframe) => {
+              iframe.width = "100%";
+              iframe.height = "100%";
+              iframe.frameBorder = "none";
+              iframe.scrolling = "no";
+            },
+          });
+          ui.mount();
+        }
+      } */
+    });
   },
 });
 const checkAndFormatJson = (options: any) => {

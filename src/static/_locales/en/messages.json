@@ -62,6 +62,15 @@
   "options_color_style_op_jt": {
     "message": "Colorful"
   },
+  "options_expand_icon_style_label": {
+    "message": "Expand icon"
+  },
+  "options_expand_icon_style_op_default": {
+    "message": ">"
+  },
+  "options_expand_icon_style_op_addsub": {
+    "message": "+-"
+  },
   "options_color_style_op_custom": {
     "message": "Custom"
   },
@@ -82,6 +91,12 @@
   },
   "options_hot_keys_op_save": {
     "message": "CTRL+S(Save as file)"
+  },
+  "options_hot_keys_jt_open": {
+    "message": "ALT+SHIFT+J(Open JSON-Tool)"
+  },
+  "options_hot_keys_dt_open": {
+    "message": "ALT+SHIFT+D(Open Dev-Tool)"
   },
   "options_donate_title": {
     "message": "Support me"
@@ -145,6 +160,9 @@
   },
   "json_btn_expand_node": {
     "message": "Expand node"
+  },
+  "json_btn_collapse_node": {
+    "message": "Collapse node"
   },
   "json_btn_scroll_to_node": {
     "message": "Scroll to node"

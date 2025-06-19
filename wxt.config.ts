@@ -13,13 +13,31 @@ export default defineConfig({
     action: {},
     web_accessible_resources: [
       {
-        resources: ["json.html"],
+        resources: ["json.html", "tools.html"],
         matches: ["*://*/*", "file:///*"],
       },
     ],
     browser_specific_settings: {
       gecko: {
         id: "json-tool@example.com",
+      },
+    },
+    commands: {
+      open_json_tool: {
+        suggested_key: {
+          windows: "Alt+Shift+J",
+          mac: "Alt+Shift+J",
+        },
+        description: "JSON-Tool快捷键",
+        global: false,
+      },
+      open_dev_tool: {
+        suggested_key: {
+          windows: "Alt+Shift+D",
+          mac: "Alt+Shift+D",
+        },
+        description: "Dev-Tool快捷键",
+        global: false,
       },
     },
   },

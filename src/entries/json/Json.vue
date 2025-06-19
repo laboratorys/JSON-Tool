@@ -14,7 +14,7 @@
       :currentKeyIndex="currentKeyIndex"
       :allKeysLength="searchResultKeys.length"
       :show="showSearch"
-      @update:show="(value: boolean) => showSearch = value"
+      @update:show="(value: boolean) => (showSearch = value)"
       @update:pattern="handleUpdatePattern"
       @moveUp="handleMoveUp"
       @moveDown="handleMoveDown" />
@@ -48,6 +48,7 @@
     :show-irrelevant-nodes="false"
     :pattern="pattern"
     :filter="treeFilter"
+    :render-switcher-icon="renderSwitcherIcon"
     :on-update:expanded-keys="updatePrefixWithExpaned" />
   <n-flex
     class="pathTips"
@@ -125,6 +126,7 @@
     :is-base64-ref="isBase64Ref"
     :is-date-time="isDateTime"
     :expanded-keys="expandedKeys"
+    :selected-keys="selectedKeys"
     :is-extension="isExtension"
     :is-encoded-ref="isEncodedRef"
     :all-json-paths="allJsonPaths"
@@ -184,6 +186,9 @@ import FileTrayIcon from "./icon/FileTray.vue";
 import CopyIcon from "./icon/Copy.vue";
 import ViewIcon from "./icon/View.vue";
 import CheckIcon from "./icon/Check.vue";
+import AddIcon from "./icon/TreeAdd.vue";
+import SubIcon from "./icon/TreeSub.vue";
+import ChevronForwardIcon from "./icon/ChevronForward.vue";
 import { currentTheme, currentThemeIcon, changeTheme } from "@/utils/theme";
 import { getDiscreteApi } from "@/utils/message";
 import {
@@ -398,7 +403,7 @@ onMounted(async () => {
     }
 
     // 初始化输入数据
-    await setInputData();
+    setInputData();
 
     // 向父窗口发送就绪消息
     window.parent.postMessage({ action: "ready" }, "*");
@@ -914,6 +919,10 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
         nodeClick(customOption);
       }
     },
+    ondblclick() {
+      //展开/收起当前节点
+      handleExpandTo(customOption.key);
+    },
     onMouseover(e: MouseEvent): void {
       //鼠标移入，显示JSON Path
       currentNodePath.value = customOption.path;
@@ -1100,16 +1109,33 @@ const expandCollapsedAllNodes = () => {
 };
 //滚动到某节点
 const handleScrollTo = () => {
-  treeInstRef.value?.scrollTo({ key: inputModel.value.nodeKey });
+  treeInstRef.value?.scrollTo({
+    key: inputModel.value.nodeKey,
+    position: "top",
+  });
 };
 //展开某节点
-const handleExpandTo = () => {
-  if (selectedKeys.value.length === 0) return; // 无选中节点时不操作
-  const targetKey = selectedKeys.value[0];
-  const parentKeys = getParentKeys(String(targetKey));
-  parentKeys.push(String(targetKey));
-  treeInstRef.value?.scrollTo({ key: inputModel.value.nodeKey });
-  expandedKeys.value = parentKeys;
+const handleExpandTo = (targetKey?: string) => {
+  const keyToExpand = targetKey ?? selectedKeys.value[0];
+
+  if (!keyToExpand) return;
+  const stringKey = String(keyToExpand);
+
+  if (expandedKeys.value.includes(stringKey)) {
+    treeInstRef.value?.scrollTo({
+      key: inputModel.value.nodeKey,
+    });
+    expandedKeys.value = expandedKeys.value.filter(
+      (item) => item !== stringKey
+    );
+  } else {
+    const parentKeys = getParentKeys(stringKey);
+    parentKeys.push(stringKey);
+    treeInstRef.value?.scrollTo({
+      key: inputModel.value.nodeKey,
+    });
+    expandedKeys.value = [...new Set([...expandedKeys.value, ...parentKeys])];
+  }
 };
 //获取父节点Keys
 const getParentKeys = (targetKey: string) => {
@@ -1585,6 +1611,17 @@ const langOptions = computed(() => [
     icon: renderLangIcon(currentLocale.value === "zh_TW", CheckIcon),
   },
 ]);
+const renderSwitcherIcon = ({ expanded }: { expanded: boolean }) => {
+  if (options.expandIconStyle == "default") {
+    return h(NIcon, null, {
+      default: () => h(expanded ? ChevronForwardIcon : ChevronForwardIcon),
+    });
+  } else if (options.expandIconStyle == "add_sub") {
+    return h(NIcon, null, {
+      default: () => h(expanded ? AddIcon : SubIcon),
+    });
+  }
+};
 </script>
 <style scoped>
 .pathTips {
