@@ -218,6 +218,14 @@
           <n-form-item :label="i18n('options_hot_keys_label')">
             <n-checkbox-group v-model:value="options.hotKeys">
               <n-checkbox
+                value="alt_shift_j"
+                :label="i18n('options_hot_keys_jt_open')"
+                disabled />
+              <n-checkbox
+                value="alt_shift_d"
+                :label="i18n('options_hot_keys_dt_open')"
+                disabled />
+              <n-checkbox
                 value="ctrl_k"
                 :label="i18n('options_hot_keys_op_search')" />
               <n-checkbox
@@ -235,6 +243,18 @@
             <n-checkbox v-model:checked="options.treeExpandMode">
               {{ i18n("options_tree_expand_text") }}
             </n-checkbox>
+          </n-form-item>
+          <n-form-item :label="i18n('options_expand_icon_style_label')">
+            <n-radio-group
+              v-model:value="options.expandIconStyle"
+              name="expandIconGroup">
+              <n-radio value="default">
+                {{ i18n("options_expand_icon_style_op_default") }}
+              </n-radio>
+              <n-radio value="add_sub">
+                {{ i18n("options_expand_icon_style_op_addsub") }}
+              </n-radio>
+            </n-radio-group>
           </n-form-item>
           <n-form-item :label="i18n('options_color_style_label')">
             <n-radio-group

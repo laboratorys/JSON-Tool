@@ -1,0 +1,12 @@
+.tool-layout {
+  margin: 15px auto;
+  box-sizing: border-box;
+}
+.tool-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
