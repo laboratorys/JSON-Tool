@@ -1,5 +1,20 @@
 ## CHANGELOG
 
+### ✨[v0.0.6] - 2025-06-19
+
+#### 🚀Features
+
+- Ported several common dev tools from [IT-Tools](https://github.com/CorentinTh/it-tools): **Token Generator**, **UUID Generator**, **Hash Text**, **Code Formatter**, **Date-Time Converter** (accessible via extension menu or shortcuts).
+- Added global shortcuts: **Alt+Shift+J (Open JSON Tool)**, **Alt+Shift+D (Open Dev Tool)** .
+- Expand or collapse the selected node when double-clicking.
+- Add Expand icon style.
+
+#### ⚡Improvements
+
+- Optimized search functionality.
+- Added quick-access menus at the bottom.
+- Added node collapse function.
+
 ### ✨[v0.0.5] - 2025-05-22
 
 #### 🐛Bug Fixes

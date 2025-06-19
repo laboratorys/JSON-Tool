@@ -31,6 +31,7 @@ JSON-Tool is a powerful, all-in-one Browser extension designed to streamline JSO
 - **Operations:** Search (Ctrl+K), Copy Key/Value/Path, Data Conversion (Compression, Decoding, Timestamp, Format Conversion).
 - **Performance:** Virtual Scrolling for Large JSON.
 - **Additional Features:** Multi-language Support, Works on Chrome, Edge, and Firefox.
+- **Dev-Tool:** Ported several common dev tools from [IT-Tools](https://github.com/CorentinTh/it-tools).
 
 ## Installation
 

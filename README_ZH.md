@@ -31,6 +31,7 @@ JSON-Tool 是一款功能强大的多合一浏览器扩展，旨在简化 JSON �
 - **操作：** 搜索（Ctrl+K）、复制键/值/路径、数据转换（压缩、解码、时间戳、格式转换）。
 - **性能：** 大型 JSON 的虚拟滚动。
 - **附加功能：** 多语言支持，兼容 Chrome、Edge 和 Firefox。
+- **开发工具:** 从[IT-Tools](https://github.com/CorentinTh/it-tools)移植了一些常用开发工具。
 
 ## 安装
 
