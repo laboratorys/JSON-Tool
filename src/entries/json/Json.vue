@@ -1618,7 +1618,7 @@ const renderSwitcherIcon = ({ expanded }: { expanded: boolean }) => {
     });
   } else if (options.expandIconStyle == "add_sub") {
     return h(NIcon, null, {
-      default: () => h(expanded ? AddIcon : SubIcon),
+      default: () => h(expanded ? SubIcon : AddIcon),
     });
   }
 };
