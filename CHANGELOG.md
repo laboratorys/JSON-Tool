@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### ✨[v0.0.6] - 2025-06-20
+
+#### 🐛Bug Fixes
+
+- expand icon display error.
+
 ### ✨[v0.0.6] - 2025-06-19
 
 #### 🚀Features
