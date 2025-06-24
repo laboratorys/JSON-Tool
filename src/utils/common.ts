@@ -38,6 +38,17 @@ const setColor = async () => {
   }
   setItem("options", options);
 };
+const setOption = async (key: string, value: any) => {
+  let options = structuredClone(defaultOptions);
+  const o = await getItem("options");
+  if (o) {
+    options = o;
+  }
+  if (options) {
+    options[key] = value;
+  }
+  setItem("options", options);
+};
 const isBase64 = (str: string | null = null) => {
   if (str === null) {
     return false;
@@ -108,13 +119,15 @@ const defaultOptions = {
   parsingEngine: "json",
   saveCollapseStatus: true,
   sortKeys: false,
-  treeExpandMode: true,
+  treeExpandMode: false,
   showLengthMode: "arr",
   hotKeys: ["ctrl_k", "ctrl_s", "alt_shift_j", "alt_shift_d"],
   expandIconStyle: "default",
   colorStyle: "jt",
   customColor: jtColor,
   color: jtColor,
+  rememberData: false,
+  skipInputWhenRememberData: false,
 };
 const encodeKey = (key: string) => {
   return encodeURIComponent(key)
@@ -140,6 +153,7 @@ const isImageUrl = async (url: string) => {
 export {
   getItem,
   setItem,
+  setOption,
   setColor,
   setJSONEngine,
   defaultOptions,

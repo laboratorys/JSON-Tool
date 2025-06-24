@@ -1,6 +1,10 @@
 <template>
   <n-flex
-    v-show="treeData.length == 0 && dataSource === 'input'"
+    v-show="
+      treeData.length == 0 &&
+      dataSource === 'input' &&
+      (!options.rememberData || !options.skipInputWhenRememberData)
+    "
     justify="center"
     align="center"
     vertical
@@ -9,21 +13,13 @@
       height: '100vh',
       //width: '100wh',
     }">
-    <SearchPopover
-      triggerText="Search JSON"
-      :currentKeyIndex="currentKeyIndex"
-      :allKeysLength="searchResultKeys.length"
-      :show="showSearch"
-      @update:show="(value: boolean) => (showSearch = value)"
-      @update:pattern="handleUpdatePattern"
-      @moveUp="handleMoveUp"
-      @moveDown="handleMoveDown" />
     <EnterInputCard
       :input-model="inputModel"
       :jpr="jpr"
       :input-start-value="inputStartValue"
       :text-type="textType"
       :convert-options="convertOptions"
+      :options="options"
       @handle-file-change="handleFileChange"
       @handle-start-input="handleStartInput"
       @handle-modify-error-input="handleModifyErrorInput"
@@ -31,6 +27,15 @@
       @handle-convert="handleConvert"
       @update:input-start-value="(value) => (inputStartValue = value)" />
   </n-flex>
+  <SearchPopover
+    triggerText="Search JSON"
+    :currentKeyIndex="currentKeyIndex"
+    :allKeysLength="searchResultKeys.length"
+    :show="showSearch"
+    @update:show="(value: boolean) => (showSearch = value)"
+    @update:pattern="handleUpdatePattern"
+    @moveUp="handleMoveUp"
+    @moveDown="handleMoveDown" />
   <n-back-top :right="100" />
   <n-tree
     v-if="treeData.length > 0 && !isLoading"
@@ -251,7 +256,7 @@ const inputModel = ref<InputModel>({
   showIcon: false,
   folderStyle: false,
   nodeKey: "JSON-0",
-  rememberData: false,
+  // rememberData: false,
   showInputPanel: false,
   clickStyle: {},
   showCollapsePannel: false,
@@ -366,7 +371,7 @@ onMounted(async () => {
         showLength: preferenceData.showLength ?? false,
         showValue: preferenceData.showValue ?? true,
         folderStyle: preferenceData.folderStyle ?? false,
-        rememberData: preferenceData.rememberData ?? false,
+        // rememberData: preferenceData.rememberData ?? false,
         showInputPanel: preferenceData.showInputPanel ?? false,
         showCollapsePannel: preferenceData.showCollapsePannel ?? false,
         clickStyle: preferenceData.clickStyle ?? {},
@@ -376,6 +381,10 @@ onMounted(async () => {
     // 如果配置了保存折叠状态，更新展开的节点
     if (options.saveCollapseStatus && savedExpandedKeys) {
       expandedKeys.value = savedExpandedKeys;
+      if (savedSelectedKeys) {
+        selectedKeys.value = savedSelectedKeys;
+        initPannelAfterBuildTree(selectedKeys.value);
+      }
     }
 
     // 处理数据来源并初始化输入
@@ -395,16 +404,32 @@ onMounted(async () => {
           dataSource.value !== "url"
         ) {
           dataSource.value = "input";
-          setInputData(message.data);
+          // 初始化输入数据
+          if (
+            options.rememberData &&
+            dataSource.value === "input" &&
+            options.skipInputWhenRememberData
+          ) {
+            getItem("inputData").then((v: any) => {
+              if (v !== null) {
+                inputStartValue.value = v;
+              } else {
+                inputStartValue.value = JT.stringify(
+                  testData.value,
+                  null,
+                  "    "
+                );
+              }
+              handleStartInput();
+            });
+          } else {
+            setInputData(message.data);
+          }
         }
       });
     } else {
       dataSource.value = "input";
     }
-
-    // 初始化输入数据
-    setInputData();
-
     // 向父窗口发送就绪消息
     window.parent.postMessage({ action: "ready" }, "*");
 
@@ -445,26 +470,23 @@ onMounted(async () => {
 });
 //设置输入历史数据
 const setInputData = (d?: null) => {
-  getItem("preference").then((v: any) => {
-    inputModel.value.rememberData = v?.rememberData || false;
-    if (inputModel.value.rememberData) {
-      getItem("inputData").then((v: any) => {
-        if (v !== null) {
-          if (d != null) {
-            inputStartValue.value = d;
-          } else {
-            inputStartValue.value = JT.stringify(JT.parse(v), null, "    ");
-          }
+  if (options.rememberData) {
+    getItem("inputData").then((v: any) => {
+      if (v !== null) {
+        if (d != null) {
+          inputStartValue.value = d;
+        } else {
+          inputStartValue.value = JT.stringify(JT.parse(v), null, "    ");
         }
-      });
-    } else {
-      if (d != null) {
-        inputStartValue.value = d;
-      } else {
-        inputStartValue.value = JT.stringify(testData.value, null, "    ");
       }
+    });
+  } else {
+    if (d != null) {
+      inputStartValue.value = d;
+    } else {
+      inputStartValue.value = JT.stringify(testData.value, null, "    ");
     }
-  });
+  }
 };
 if (isExtension.value) {
   //监听background.ts发来的数据消息
@@ -1017,8 +1039,16 @@ const nodeClick = (customOption: CustomTreeOption | null) => {
   //显示面板
   if (!options.showPannel.includes("onlyBtn")) {
     showInputPanel.value = true;
-    showCollapsePannel.value = true;
-    clickStyle.value = {};
+    if (
+      !showCollapsePannel.value &&
+      options.showPannel.includes("lastStatus")
+    ) {
+      showCollapsePannel.value = false;
+      clickStyle.value = { width: "27px", height: "27px" };
+    } else {
+      showCollapsePannel.value = true;
+      clickStyle.value = {};
+    }
   }
   syncPannelConfig();
   //设置选中key
@@ -1163,7 +1193,12 @@ const modifyInputValue = () => {
     inputModel.value.value = JT.stringify(parsedValue, null, "    ");
   }
   modifyNodeByKey(inputModel.value.nodeKey, modifyInputValue);
-  isModified.value = true;
+  if (dataSource.value === "input" && options.rememberData) {
+    inputStartValue.value = JT.stringify(jsonParsedData.value, null, "    ");
+    handleStartInput();
+  } else {
+    isModified.value = true;
+  }
 };
 //根据key查找节点
 const findNodeByKey = (
@@ -1181,6 +1216,7 @@ const findNodeByKey = (
 };
 //根据key修改节点
 const modifyNodeByKey = (key: string | number, newValue: string | null) => {
+  keyCounter = 0;
   const targetNode: CustomTreeOption | null = findNodeByKey(
     treeData.value,
     key
@@ -1200,7 +1236,6 @@ const modifyNodeByKey = (key: string | number, newValue: string | null) => {
   targetNode.type = valueType;
   targetNode.isLeaf = !(valueType === "object" || valueType === "array");
 
-  // 如果节点从叶子变为非叶子，重新构建子树并更新 allExpandableKeys
   if (!targetNode.isLeaf) {
     const subTree = buildTree(
       parsedValue,
@@ -1210,14 +1245,12 @@ const modifyNodeByKey = (key: string | number, newValue: string | null) => {
     )[0];
     targetNode.children = subTree.children || [];
 
-    // 更新 allExpandableKeys 和 keyToParentMap
     if (!allExpandableKeys.value.includes(targetNode.key)) {
       allExpandableKeys.value.push(targetNode.key);
     }
     updateExpandableKeys(targetNode.children || [], targetNode.key);
   } else {
     targetNode.children = [];
-    // 如果从非叶子变为叶子，从 allExpandableKeys 中移除
     allExpandableKeys.value = allExpandableKeys.value.filter(
       (k) => k !== targetNode.key
     );
@@ -1285,9 +1318,13 @@ const handleStartInput = () => {
     if (options.treeExpandMode && expandedKeys.value.length == 0) {
       expandedKeys.value = allExpandableKeys.value;
     }
-    initPannelAfterBuildTree();
+    if (options.saveCollapseStatus && selectedKeys.value.length > 0) {
+      initPannelAfterBuildTree(selectedKeys.value);
+    } else {
+      initPannelAfterBuildTree();
+    }
   }
-  if (inputModel.value.rememberData) {
+  if (options.rememberData) {
     setItem("inputData", inputStartValue.value);
   }
 };
@@ -1318,7 +1355,7 @@ watch(
       showLength: inputModel.value.showLength,
       showIcon: inputModel.value.showIcon,
       folderStyle: inputModel.value.folderStyle,
-      rememberData: inputModel.value.rememberData,
+      // rememberData: inputModel.value.rememberData,
       showInputPanel: inputModel.value.showInputPanel,
       showCollapsePannel: inputModel.value.showCollapsePannel,
       clickStyle: inputModel.value.clickStyle,
@@ -1326,12 +1363,20 @@ watch(
   },
   { deep: true }
 );
-watch(expandedKeys.value, () => {
-  setItem("expandedKeys", expandedKeys.value);
-});
-watch(selectedKeys.value, () => {
-  setItem("selectedKeys", selectedKeys.value);
-});
+watch(
+  expandedKeys,
+  () => {
+    setItem("expandedKeys", expandedKeys.value);
+  },
+  { deep: true }
+);
+watch(
+  selectedKeys,
+  () => {
+    setItem("selectedKeys", selectedKeys.value);
+  },
+  { deep: true }
+);
 //tree搜索过滤
 const treeFilter = (pattern: string, node: TreeOption) => {
   const customOption = node as CustomTreeOption;
@@ -1492,13 +1537,14 @@ const initPannelAfterBuildTree = (savedSelectedKeys?: any[]) => {
     treeData.value,
     "JSON-0"
   );
+  let setPannelStatus = true; //设置面板状态
   if (
     options.showPannel.includes("startup") &&
     !options.showPannel.includes("lastStatus")
   ) {
-    if (rootNode != null) {
-      nodeClick(rootNode);
-    }
+    showInputPanel.value = true;
+    showCollapsePannel.value = true;
+    clickStyle.value = {};
   } else if (options.showPannel.includes("onlyBtn")) {
     showInputPanel.value = true;
     showCollapsePannel.value = false;
@@ -1509,9 +1555,15 @@ const initPannelAfterBuildTree = (savedSelectedKeys?: any[]) => {
     inputModel.value.showInputPanel != undefined &&
     inputModel.value.showCollapsePannel != undefined
   ) {
-    showInputPanel.value = inputModel.value.showInputPanel;
-    showCollapsePannel.value = inputModel.value.showCollapsePannel;
-    clickStyle.value = inputModel.value.clickStyle;
+    if (treeData.value.length > 0 && !isLoading.value) {
+      showInputPanel.value = inputModel.value.showInputPanel;
+      showCollapsePannel.value = inputModel.value.showCollapsePannel;
+      clickStyle.value = inputModel.value.clickStyle;
+    }
+  } else {
+    setPannelStatus = false;
+  }
+  if (setPannelStatus) {
     if (
       showInputPanel.value &&
       savedSelectedKeys?.length &&
@@ -1613,13 +1665,21 @@ const langOptions = computed(() => [
 ]);
 const renderSwitcherIcon = ({ expanded }: { expanded: boolean }) => {
   if (options.expandIconStyle == "default") {
-    return h(NIcon, null, {
-      default: () => h(expanded ? ChevronForwardIcon : ChevronForwardIcon),
-    });
+    return h(
+      NIcon,
+      { size: "16" },
+      {
+        default: () => h(expanded ? ChevronForwardIcon : ChevronForwardIcon),
+      }
+    );
   } else if (options.expandIconStyle == "add_sub") {
-    return h(NIcon, null, {
-      default: () => h(expanded ? SubIcon : AddIcon),
-    });
+    return h(
+      NIcon,
+      { size: "16" },
+      {
+        default: () => h(expanded ? SubIcon : AddIcon),
+      }
+    );
   }
 };
 </script>

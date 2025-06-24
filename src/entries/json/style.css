@@ -14,3 +14,7 @@
     --input-panel-height: 90vh;
   }
 }
+.n-tree .n-tree-node-switcher .n-tree-node-switcher__icon {
+  height: 16px;
+  width: 16px;
+}

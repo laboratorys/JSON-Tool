@@ -16,9 +16,10 @@
         v-if="jpr == null || jpr.isValid">
         <template #trigger>
           <n-switch
-            v-model:value="inputModel.rememberData"
+            v-model:value="options.rememberData"
             size="medium"
-            class="remenber-data">
+            class="remenber-data"
+            @update:value="handleChgRemember">
             <template #checked-icon>
               <n-icon>
                 <svg
@@ -108,7 +109,15 @@
           @dragleave="handleDragLeave"
           @drop="handleDrop" />
       </div>
-      <n-button size="tiny" @click="handleStartInput">JSON-Tool</n-button>
+      <n-button size="tiny" @click="handleStartInput">OK</n-button>
+      <n-popover trigger="hover" placement="bottom" :show-arrow="false">
+        <template #trigger>
+          <n-button size="tiny" @click="handleClipboardInput">{{
+            i18n("json_clipboard_btn_text")
+          }}</n-button>
+        </template>
+        <span>{{ i18n("json_clipboard_btn_proper") }}</span>
+      </n-popover>
       <n-button
         size="tiny"
         v-if="jpr && !jpr.isValid"
@@ -163,14 +172,16 @@ import { ref } from "vue";
 import { i18n } from "@/utils/i18n";
 import TextLine from "../components/TextLine.vue";
 import { type JsonParseResult, type InputModel } from "@/utils/types";
+import { setOption } from "@/utils/common";
 const textareaRef = ref<InstanceType<typeof NInput> | null>(null);
 
-defineProps<{
+const props = defineProps<{
   inputModel: InputModel;
   jpr: JsonParseResult | null;
   inputStartValue: string | null;
   textType: string;
   convertOptions: { label: string; key: string }[];
+  options: any;
 }>();
 
 const emit = defineEmits([
@@ -239,6 +250,26 @@ const handleDrop = (event: DragEvent) => {
   };
   reader.readAsText(file, "UTF-8");
 };
+const handleClipboardInput = async () => {
+  if (!navigator.clipboard) {
+    updateInputStartValue("Error: Clipboard API not supported");
+    return;
+  }
+  try {
+    const text = await navigator.clipboard.readText();
+    updateInputStartValue(text);
+    handleStartInput();
+  } catch (error) {
+    console.error("Failed to read clipboard contents:", error);
+    updateInputStartValue("Error: Unable to read clipboard");
+  }
+};
+const handleChgRemember = async (v: boolean) => {
+  await setOption("rememberData", v);
+  if (v && props.options.skipInputWhenRememberData) {
+    handleStartInput();
+  }
+};
 </script>
 
 <style scoped>
@@ -262,7 +293,10 @@ const handleDrop = (event: DragEvent) => {
 }
 .input-textarea {
   width: 100%;
-  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  transition:
+    border-color 0.3s,
+    background-color 0.3s,
+    box-shadow 0.3s;
 }
 .input-textarea.drag-over {
   background-color: #333333;

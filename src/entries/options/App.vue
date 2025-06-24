@@ -143,6 +143,16 @@
               {{ i18n("options_context_menus_text") }}
             </n-checkbox>
           </n-form-item>
+          <n-form-item :label="i18n('options_start_pannel_label')">
+            <n-space item-style="display: flex;" align="center">
+              <n-checkbox v-model:checked="options.rememberData">
+                {{ i18n("options_start_pannel_op_remember_data") }}
+              </n-checkbox>
+              <n-checkbox v-model:checked="options.skipInputWhenRememberData">
+                {{ i18n("options_start_pannel_op_skip") }}
+              </n-checkbox>
+            </n-space>
+          </n-form-item>
           <n-form-item :label="i18n('options_edit_pannel_label')">
             <n-checkbox-group
               v-model:value="options.showPannel"
@@ -233,14 +243,18 @@
                 :label="i18n('options_hot_keys_op_save')" />
             </n-checkbox-group>
           </n-form-item>
-          <n-form-item>
+          <n-form-item :label="i18n('options_json_tree_label')">
             <n-checkbox v-model:checked="options.sortKeys">
               {{ i18n("options_sort_keys_text") }}
             </n-checkbox>
-            <n-checkbox v-model:checked="options.saveCollapseStatus">
+            <n-checkbox
+              v-model:checked="options.saveCollapseStatus"
+              @update:checked="handleExpandStatus">
               {{ i18n("options_save_collapse_status_text") }}
             </n-checkbox>
-            <n-checkbox v-model:checked="options.treeExpandMode">
+            <n-checkbox
+              v-model:checked="options.treeExpandMode"
+              @update:checked="handleExpandMode">
               {{ i18n("options_tree_expand_text") }}
             </n-checkbox>
           </n-form-item>
@@ -350,6 +364,7 @@ import {
   NCheckboxGroup,
   NModal,
   NBadge,
+  NSpace,
 } from "naive-ui";
 import { ref, reactive } from "vue";
 import {
@@ -471,15 +486,34 @@ const handleResetOptions = () => {
   const { message } = getDiscreteApi();
   message.success(i18n("options_save_success_msg"));
 };
-const checkShowBtn = (value: (string | number)[]) => {
-  if (value.includes("onlyBtn")) {
-    options.showPannel = ["leftClick", "onlyBtn"];
+const checkShowBtn = (value: (string | number)[], meta: any) => {
+  if (meta.actionType === "check") {
+    if (meta.value === "onlyBtn") {
+      options.showPannel = ["leftClick", "onlyBtn"];
+    } else if (meta.value === "startup") {
+      options.showPannel = ["leftClick", "startup"];
+    } else if (meta.value === "lastStatus") {
+      options.showPannel = ["leftClick", "lastStatus"];
+    }
   }
+};
+const handleExpandStatus = (v: boolean) => {
+  options.treeExpandMode = !v;
+};
+const handleExpandMode = (v: boolean) => {
+  options.saveCollapseStatus = !v;
 };
 onMounted(() => {
   getItem("options").then((savedOptions: any) => {
     if (savedOptions) {
       Object.assign(options, savedOptions);
+    }
+    //兼容旧版本
+    if (!options.hotKeys.includes("alt_shift_j")) {
+      options.hotKeys.push("alt_shift_j");
+    }
+    if (!options.hotKeys.includes("alt_shift_d")) {
+      options.hotKeys.push("alt_shift_d");
     }
   });
 });
