@@ -429,6 +429,7 @@ onMounted(async () => {
       });
     } else {
       dataSource.value = "input";
+      setInputData();
     }
     // 向父窗口发送就绪消息
     window.parent.postMessage({ action: "ready" }, "*");
@@ -470,6 +471,7 @@ onMounted(async () => {
 });
 //设置输入历史数据
 const setInputData = (d?: null) => {
+  debugger;
   if (options.rememberData) {
     getItem("inputData").then((v: any) => {
       if (v !== null) {
@@ -488,7 +490,7 @@ const setInputData = (d?: null) => {
     }
   }
 };
-if (isExtension.value) {
+/**if (isExtension.value) {
   //监听background.ts发来的数据消息
   browser.runtime.onMessage.addListener((message) => {
     if (
@@ -503,7 +505,7 @@ if (isExtension.value) {
 } else {
   dataSource.value = "input";
   setInputData();
-}
+}**/
 
 onUnmounted(() => {
   window.removeEventListener("resize", debouncedUpdateHeight);
