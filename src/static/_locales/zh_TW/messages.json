@@ -44,11 +44,14 @@
   "options_show_length_mode_op_arrObj": {
     "message": "陣列與物件"
   },
+  "options_json_tree_label": {
+    "message": "樹節點"
+  },
   "options_sort_keys_text": {
     "message": "鍵值依字母排序"
   },
   "options_save_collapse_status_text": {
-    "message": "記住上次摺疊狀態"
+    "message": "記住摺疊狀態"
   },
   "options_tree_expand_text": {
     "message": "預設展開全部"
@@ -194,6 +197,15 @@
   "json_remember_data_proper": {
     "message": "記住資料"
   },
+  "json_clipboard_btn_proper": {
+    "message": "貼上 → 完成"
+  },
+  "json_clipboard_btn_text": {
+    "message": "剪貼簿"
+  },
+  "json_convert_btn_text": {
+    "message": "轉換"
+  },
   "json_link_tooltip": {
     "message": "按住 Ctrl 鍵開啟連結"
   },
@@ -217,5 +229,14 @@
   },
   "json_search_placeholder": {
     "message": "查找（使用↑↓查看）"
+  },
+  "options_start_pannel_label": {
+    "message": "輸入面板"
+  },
+  "options_start_pannel_op_remember_data": {
+    "message": "記住資料"
+  },
+  "options_start_pannel_op_skip": {
+    "message": "當開啟記住資料時跳過輸入"
   }
 }

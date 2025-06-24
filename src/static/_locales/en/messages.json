@@ -44,11 +44,14 @@
   "options_show_length_mode_op_arrObj": {
     "message": "Array & Object"
   },
+  "options_json_tree_label": {
+    "message": "Tree node"
+  },
   "options_sort_keys_text": {
     "message": "Sort keys"
   },
   "options_save_collapse_status_text": {
-    "message": "Save latest collapse status of key"
+    "message": "Remember folded state"
   },
   "options_tree_expand_text": {
     "message": "Default expand all"
@@ -194,6 +197,15 @@
   "json_remember_data_proper": {
     "message": "Remember data"
   },
+  "json_clipboard_btn_proper": {
+    "message": "Paste from Clipboard → Done"
+  },
+  "json_clipboard_btn_text": {
+    "message": "Clipboard"
+  },
+  "json_convert_btn_text": {
+    "message": "Convert"
+  },
   "json_link_tooltip": {
     "message": "Click (hold Ctrl to open)"
   },
@@ -217,5 +229,14 @@
   },
   "json_search_placeholder": {
     "message": "Find(use ↑↓ to view)"
+  },
+  "options_start_pannel_label": {
+    "message": "Input pannel"
+  },
+  "options_start_pannel_op_remember_data": {
+    "message": "Remember data"
+  },
+  "options_start_pannel_op_skip": {
+    "message": "Skip input when remember data"
   }
 }

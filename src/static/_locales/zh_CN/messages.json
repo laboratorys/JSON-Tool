@@ -44,11 +44,14 @@
   "options_show_length_mode_op_arrObj": {
     "message": "数组和对象"
   },
+  "options_json_tree_label": {
+    "message": "树节点"
+  },
   "options_sort_keys_text": {
     "message": "Key按字母排序"
   },
   "options_save_collapse_status_text": {
-    "message": "记住上次收起状态"
+    "message": "记住折叠状态"
   },
   "options_tree_expand_text": {
     "message": "默认展开全部"
@@ -194,6 +197,15 @@
   "json_remember_data_proper": {
     "message": "记住数据"
   },
+  "json_clipboard_btn_proper": {
+    "message": "从剪贴板粘贴 → 完成"
+  },
+  "json_clipboard_btn_text": {
+    "message": "剪贴板"
+  },
+  "json_convert_btn_text": {
+    "message": "转换"
+  },
   "json_link_tooltip": {
     "message": "按住 Ctrl 打开链接"
   },
@@ -217,5 +229,14 @@
   },
   "json_search_placeholder": {
     "message": "查找（使用↑↓查看）"
+  },
+  "options_start_pannel_label": {
+    "message": "输入面板"
+  },
+  "options_start_pannel_op_remember_data": {
+    "message": "记住数据"
+  },
+  "options_start_pannel_op_skip": {
+    "message": "当开启记住数据时跳过输入"
   }
 }
