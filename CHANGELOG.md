@@ -1,10 +1,20 @@
 ## CHANGELOG
 
-### ✨[v0.0.7] - 2025-06-20
+### ✨[v0.0.7] - 2025-06-24
+
+#### 🚀Features
+
+- Added skip input option, and can render JSON directly with remember data option.
 
 #### 🐛Bug Fixes
 
-- expand icon display error.
+- Expand icon display error.
+- Unable to maintain node status
+
+#### ⚡Improvements
+
+- Edit panel to modify JSON data and save it.
+- Optimize node expansion and panel status display.
 
 ### ✨[v0.0.6] - 2025-06-19
 
