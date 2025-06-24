@@ -5,6 +5,7 @@
 #### 🚀Features
 
 - Added skip input option, and can render JSON directly with remember data option.
+- Add a button to the input panel to paste data directly from the clipboard and format it.
 
 #### 🐛Bug Fixes
 
