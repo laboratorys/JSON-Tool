@@ -1544,9 +1544,11 @@ const initPannelAfterBuildTree = (savedSelectedKeys?: any[]) => {
     options.showPannel.includes("startup") &&
     !options.showPannel.includes("lastStatus")
   ) {
-    showInputPanel.value = true;
-    showCollapsePannel.value = true;
-    clickStyle.value = {};
+    if (treeData.value.length > 0 && !isLoading.value) {
+      showInputPanel.value = true;
+      showCollapsePannel.value = true;
+      clickStyle.value = {};
+    }
   } else if (options.showPannel.includes("onlyBtn")) {
     showInputPanel.value = true;
     showCollapsePannel.value = false;
